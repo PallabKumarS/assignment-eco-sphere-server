@@ -1,24 +1,31 @@
-import { get } from 'http';
-import UserModel from '../user/user.model';
 import { AppError } from '../../errors/AppError';
 import httpStatus from 'http-status';
 import config from '../../config';
-import { createToken, verifyToken } from './auth.utils';
+import {
+  createToken,
+  isJWTIssuedBeforePasswordChanged,
+  verifyToken,
+} from './auth.utils';
 import { TLoginUser } from './auth.interface';
 import { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import prisma from '../../utils/prismaClient';
 
 // login user here
 const loginUser = async (payload: TLoginUser) => {
   // checking if the user is exist
-  const user = await UserModel.isUserExists(payload.email);
+  const user = await prisma.user.findUnique({
+    where: {
+      email: payload.email,
+    },
+  });
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
   }
 
   // checking if the user is active
-  if (!user.isActive) {
+  if (user.status !== 'ACTIVE') {
     throw new AppError(httpStatus.FORBIDDEN, 'Your account is deactivated !');
   }
 
@@ -28,18 +35,17 @@ const loginUser = async (payload: TLoginUser) => {
   }
 
   //checking if the password is correct
-  if (
-    !(await UserModel.isPasswordMatched(
-      payload?.password,
-      user?.password as string,
-    ))
-  ) {
+  const isCorrectPassword: boolean = await bcrypt.compare(
+    payload.password,
+    user.password,
+  );
+  if (!isCorrectPassword) {
     throw new AppError(httpStatus.FORBIDDEN, 'Password do not match');
   }
 
   //create token and sent to the  client
   const jwtPayload = {
-    userId: user.userId as string,
+    userId: user.userId,
     role: user.role,
     email: user.email,
   };
@@ -68,14 +74,18 @@ const changePassword = async (
   payload: { oldPassword: string; newPassword: string },
 ) => {
   // checking if the user is exist
-  const user = await UserModel.isUserExists(userData.email);
+  const user = await prisma.user.findUnique({
+    where: {
+      email: userData.email,
+    },
+  });
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
   }
 
   // checking if the user is active
-  if (!user.isActive) {
+  if (user.status !== 'ACTIVE') {
     throw new AppError(httpStatus.FORBIDDEN, 'Your account is deactivated !');
   }
 
@@ -85,30 +95,28 @@ const changePassword = async (
   }
 
   //checking if the password is correct
-  if (
-    !(await UserModel.isPasswordMatched(
-      payload.oldPassword,
-      user?.password as string,
-    ))
-  ) {
+  const isCorrectPassword: boolean = await bcrypt.compare(
+    payload.oldPassword,
+    user.password,
+  );
+  if (!isCorrectPassword) {
     throw new AppError(httpStatus.FORBIDDEN, 'Password do not match');
   }
 
   //hash new password
   const newHashedPassword = await bcrypt.hash(
     payload.newPassword,
-    Number(config.bcrypt_salt_rounds),
+    Number(config.bcrypt_salt_rounds as string),
   );
 
-  await UserModel.findOneAndUpdate(
-    {
-      userId: userData.userId,
+  await prisma.user.update({
+    where: {
+      email: userData.email,
     },
-    {
+    data: {
       password: newHashedPassword,
-      passwordChangedAt: new Date(),
     },
-  );
+  });
 
   return null;
 };
@@ -121,14 +129,18 @@ const refreshToken = async (token: string) => {
   const { email, iat } = decoded;
 
   // checking if the user is exist
-  const user = await UserModel.isUserExists(email);
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
   }
 
   // checking if the user is active
-  if (!user.isActive) {
+  if (user.status !== 'ACTIVE') {
     throw new AppError(httpStatus.FORBIDDEN, 'Your account is deactivated !');
   }
 
@@ -139,10 +151,7 @@ const refreshToken = async (token: string) => {
 
   if (
     user.passwordChangedAt &&
-    UserModel.isJWTIssuedBeforePasswordChanged(
-      user.passwordChangedAt,
-      iat as number,
-    )
+    isJWTIssuedBeforePasswordChanged(user.passwordChangedAt, iat as number)
   ) {
     throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized !');
   }

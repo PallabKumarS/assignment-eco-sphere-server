@@ -14,4 +14,5 @@ export default {
   jwt_refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
   local_client: process.env.LOCAL_CLIENT,
   client: process.env.CLIENT,
+  bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
 };
