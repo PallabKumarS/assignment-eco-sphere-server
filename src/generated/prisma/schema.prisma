@@ -1,0 +1,136 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String             @id @default(uuid())
+  name             String
+  email            String             @unique
+  password         String
+  role             UserRole           @default(MEMBER)
+  profilePhoto     String?
+  contactNumber    String?
+  address          String?
+  status           UserStatus         @default(ACTIVE)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  ideas            Idea[]
+  vote             Vote[]
+  Comment          Comment[]
+  PaidIdeaPurchase PaidIdeaPurchase[]
+
+  @@map("users")
+}
+
+model Category {
+  id   String @id @default(uuid())
+  name String @unique
+  idea Idea[]
+
+  @@map("categories")
+}
+
+model Idea {
+  id               String             @id @default(uuid())
+  title            String
+  problem          String
+  solution         String
+  description      String
+  images           String[] // store image URLs
+  status           IdeaStatus         @default(DRAFT)
+  feedback         String?
+  isPaid           Boolean            @default(false)
+  price            Float? // applicable if isPaid is true
+  categoryId       String
+  category         Category           @relation(fields: [categoryId], references: [id])
+  authorId         String
+  author           User               @relation(fields: [authorId], references: [id])
+  vote             Vote[]
+  comment          Comment[]
+  paidIdeaPurchase PaidIdeaPurchase[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("ideas")
+}
+
+model Vote {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  ideaId    String
+  idea      Idea     @relation(fields: [ideaId], references: [id])
+  type      VoteType
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, ideaId])
+  @@map("votes")
+}
+
+model Comment {
+  id       String    @id @default(uuid())
+  content  String
+  authorId String
+  author   User      @relation(fields: [authorId], references: [id])
+  ideaId   String
+  idea     Idea      @relation(fields: [ideaId], references: [id])
+  parentId String? // for nested comments
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies  Comment[] @relation("CommentReplies")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("comments")
+}
+
+model PaidIdeaPurchase {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  ideaId    String
+  idea      Idea     @relation(fields: [ideaId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, ideaId])
+  @@map("paid_purchases")
+}
+
+enum VoteType {
+  UPVOTE
+  DOWNVOTE
+}
+
+enum UserStatus {
+  ACTIVE
+  BLOCKED
+  DELETED
+}
+
+enum IdeaStatus {
+  DRAFT
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  MEMBER
+}
