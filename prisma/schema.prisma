@@ -50,9 +50,9 @@ model Idea {
   price            Float? // applicable if isPaid is true
   categories       Category[]         @relation("IdeaCategories")
   authorId         String
-  author           User               @relation(fields: [authorId], references: [id])
-  vote             Vote[]
-  comment          Comment[]
+  users           User               @relation(fields: [authorId], references: [id])
+  votes             Vote[]
+  comments          Comment[]
   paidIdeaPurchase PaidIdeaPurchase[]
 
   createdAt DateTime @default(now())
@@ -78,8 +78,8 @@ model Vote {
 model Comment {
   id       String    @id @default(uuid())
   content  String
-  authorId String
-  author   User      @relation(fields: [authorId], references: [id])
+  userId String
+  user   User      @relation(fields: [userId], references: [id])
   ideaId   String
   idea     Idea      @relation(fields: [ideaId], references: [id])
   parentId String? // for nested comments

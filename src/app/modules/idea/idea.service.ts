@@ -1,4 +1,4 @@
-import { Comment, Idea, IdeaStatus } from '@prisma/client';
+import { Idea, IdeaStatus } from '@prisma/client';
 import prisma from '../../utils/prismaClient';
 import { AppError } from '../../errors/AppError';
 import httpStatus from 'http-status';
@@ -64,8 +64,10 @@ const getIdeaByIdService = async (id: string): Promise<Idea | null> => {
   const idea = await prisma.idea.findUnique({
     where: { id },
     include: {
-      author: true,
+      users: true,
       categories: true,
+      votes: true,
+      comments: true,
     },
   });
 
@@ -102,13 +104,6 @@ const changeIdeaStatusService = async (
   });
 };
 
-const getIdeaCommentsService = async (ideaId: string): Promise<Comment[]> => {
-  return await prisma.comment.findMany({
-    where: { ideaId },
-    orderBy: { createdAt: 'asc' },
-  });
-};
-
 const getIdeaVotesService = async (
   ideaId: string,
 ): Promise<{ upVotes: number; downVotes: number }> => {
@@ -129,6 +124,5 @@ export const IdeaService = {
   updateIdeaService,
   deleteIdeaService,
   changeIdeaStatusService,
-  getIdeaCommentsService,
   getIdeaVotesService,
 };

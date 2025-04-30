@@ -1,62 +1,56 @@
-import { Router } from "express";
-import { IdeaController } from "./idea.controller";
-import auth from "../../middlewares/auth";
-import validateRequest from "../../middlewares/validateRequest";
-import { IdeaValidation } from "./idea.validation";
-import { UserRole } from "@prisma/client";
+import { Router } from 'express';
+import { IdeaController } from './idea.controller';
+import auth from '../../middlewares/auth';
+import validateRequest from '../../middlewares/validateRequest';
+import { IdeaValidation } from './idea.validation';
+import { UserRole } from '@prisma/client';
 
 const router = Router();
 
 // Define routes
 router.post(
-  "/",
+  '/',
   auth(UserRole.MEMBER),
   validateRequest(IdeaValidation.createIdea),
-  IdeaController.createIdea
+  IdeaController.createIdea,
 );
 
 router.get(
-  "/",
-  auth(UserRole.ADMIN,UserRole.MEMBER),
-  IdeaController.getAllIdeas
-);
-
-router.get(
-  "/:id",
+  '/',
   auth(UserRole.ADMIN, UserRole.MEMBER),
-  IdeaController.getIdeaById
+  IdeaController.getAllIdeas,
+);
+
+router.get(
+  '/:id',
+  auth(UserRole.ADMIN, UserRole.MEMBER),
+  IdeaController.getIdeaById,
 );
 
 router.patch(
-  "/:id",
+  '/:id',
   auth(UserRole.MEMBER),
   validateRequest(IdeaValidation.updateIdea),
-  IdeaController.updateIdea
+  IdeaController.updateIdea,
 );
 
 router.delete(
-  "/:id",
+  '/:id',
   auth(UserRole.MEMBER, UserRole.ADMIN),
-  IdeaController.deleteIdea
+  IdeaController.deleteIdea,
 );
 
 router.patch(
-  "/:id/status",
+  '/:id/status',
   auth(UserRole.ADMIN),
   validateRequest(IdeaValidation.updateIdeaStatus),
-  IdeaController.changeIdeaStatus
+  IdeaController.changeIdeaStatus,
 );
 
 router.get(
-  "/:id/comments",
+  '/:id/votes',
   auth(UserRole.ADMIN, UserRole.MEMBER),
-  IdeaController.getIdeaComments
-);
-
-router.get(
-  "/:id/votes",
-  auth(UserRole.ADMIN, UserRole.MEMBER),
-  IdeaController.getIdeaVotes
+  IdeaController.getIdeaVotes,
 );
 
 export const IdeaRoutes = router;
