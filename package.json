@@ -20,16 +20,16 @@
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "generate": "bun x prisma generate",
-    "migrate": "bun x prisma migrate dev",
-    "build": "bun run tsc",
+    "generate": "npx prisma generate",
+    "migrate": "npx prisma migrate dev",
+    "build": "npm run tsc",
     "dev": "tsx watch src/server.ts",
     "prod": "node ./dist/server.js",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --fix",
     "prettier": "prettier --ignore-path .gitignore --write \"./src/**/*.+(js|ts|json)\"",
-    "prettier:fix": "bun run prettier --write src",
-    "create:module": "bun run src/scripts/createModule.ts"
+    "prettier:fix": "npm run prettier --write src",
+    "create:module": "npm run src/scripts/createModule.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.7.0",

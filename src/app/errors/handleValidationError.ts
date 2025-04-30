@@ -1,4 +1,4 @@
-import { PrismaClientValidationError } from '../../../prisma/generated/runtime/library';
+import { PrismaClientValidationError } from '@prisma/client/runtime/library';
 import { TErrorSources, TGenericErrorResponse } from './error.interface';
 
 const handlePrismaValidationError = (

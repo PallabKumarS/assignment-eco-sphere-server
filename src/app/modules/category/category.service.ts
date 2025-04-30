@@ -1,4 +1,4 @@
-import { Category } from '../../../../prisma/generated';
+import { Category } from '@prisma/client';
 import { AppError } from '../../errors/AppError';
 import prisma from '../../utils/prismaClient';
 import httpStatus from 'http-status';
