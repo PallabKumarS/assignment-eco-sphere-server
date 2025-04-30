@@ -21,7 +21,7 @@
   },
   "scripts": {
     "generate": "bun x prisma generate",
-    "migrate": "bun x prisma migrate deploy",
+    "migrate": "bun x prisma migrate dev",
     "build": "bun run tsc",
     "dev": "tsx watch src/server.ts",
     "prod": "node ./dist/server.js",
