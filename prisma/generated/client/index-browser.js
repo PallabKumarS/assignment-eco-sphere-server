@@ -121,17 +121,37 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 });
 
 exports.Prisma.UserScalarFieldEnum = {
-  userId: 'userId',
-  email: 'email',
+  id: 'id',
   name: 'name',
+  email: 'email',
+  password: 'password',
+  role: 'role',
   profilePhoto: 'profilePhoto',
   contactNumber: 'contactNumber',
   address: 'address',
-  isDeleted: 'isDeleted',
-  password: 'password',
-  passwordChangedAt: 'passwordChangedAt',
-  role: 'role',
   status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+};
+
+exports.Prisma.IdeaScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  problem: 'problem',
+  solution: 'solution',
+  description: 'description',
+  images: 'images',
+  status: 'status',
+  feedback: 'feedback',
+  isPaid: 'isPaid',
+  price: 'price',
+  categoryId: 'categoryId',
+  authorId: 'authorId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -162,8 +182,18 @@ exports.UserStatus = exports.$Enums.UserStatus = {
   DELETED: 'DELETED'
 };
 
+exports.IdeaStatus = exports.$Enums.IdeaStatus = {
+  DRAFT: 'DRAFT',
+  PENDING: 'PENDING',
+  UNDER_REVIEW: 'UNDER_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Category: 'Category',
+  Idea: 'Idea'
 };
 
 /**

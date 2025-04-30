@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "generated/client"
+  provider      = "prisma-client-js"
+  output        = "generated/client"
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
@@ -10,34 +10,66 @@ datasource db {
 }
 
 model User {
-  userId                 String     @id @default(uuid())
-  email              String     @unique
+  id            String     @id @default(uuid())
   name          String
+  email         String     @unique
+  password      String
+  role          UserRole   @default(MEMBER)
   profilePhoto  String?
   contactNumber String?
   address       String?
-  isDeleted     Boolean  @default(false)
-  password           String
-  passwordChangedAt DateTime?
-  role               UserRole
-  status             UserStatus @default(ACTIVE)
-  createdAt          DateTime   @default(now())
-  updatedAt          DateTime   @updatedAt
-
+  status        UserStatus @default(ACTIVE)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  ideas         Idea[]
 
   @@map("users")
- }
+}
 
+model Category {
+  id    String @id @default(uuid())
+  name  String @unique
+  ideas Idea[]
 
- enum UserStatus {
+  @@map("categories")
+}
+
+model Idea {
+  id          String     @id @default(uuid())
+  title       String
+  problem     String
+  solution    String
+  description String
+  images      String[] // store image URLs
+  status      IdeaStatus @default(DRAFT)
+  feedback    String?
+  isPaid      Boolean    @default(false)
+  price       Float? // applicable if isPaid is true
+  categoryId  String
+  category    Category   @relation(fields: [categoryId], references: [id])
+  authorId    String
+  author      User       @relation(fields: [authorId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum UserStatus {
   ACTIVE
   BLOCKED
   DELETED
+}
+
+enum IdeaStatus {
+  DRAFT
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
 }
 
 enum UserRole {
   SUPER_ADMIN
   ADMIN
   MEMBER
-  
 }
