@@ -4,8 +4,15 @@ import validateRequest from '../../middlewares/validateRequest';
 import { AuthValidation } from './auth.validation';
 import auth from '../../middlewares/auth';
 import { UserRole } from '@prisma/client';
+import { UserValidation } from '../user/user.validation';
 
 const router = Router();
+
+router.post(
+  '/register',
+  validateRequest(UserValidation.createUserValidationSchema),
+  AuthController.registerUser,
+);
 
 router.post(
   '/login',

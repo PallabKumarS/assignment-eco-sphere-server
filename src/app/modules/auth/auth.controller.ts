@@ -3,10 +3,21 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
 
+// register user controller
+const registerUser = catchAsync(async (req, res) => {
+  const result = await AuthService.registerUser(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: 'User is created successfully!',
+    data: result,
+  });
+});
+
 // login user controller
 const loginUser = catchAsync(async (req, res) => {
-  const result = await AuthService.loginUser(req.body);
-  const { refreshToken, accessToken } = result;
+  const { accessToken, refreshToken } = await AuthService.loginUser(req.body);
 
   res.cookie('refreshToken', refreshToken, {
     secure: true,
@@ -59,4 +70,9 @@ const refreshToken = catchAsync(async (req, res) => {
   });
 });
 
-export const AuthController = { loginUser, changePassword, refreshToken };
+export const AuthController = {
+  loginUser,
+  changePassword,
+  refreshToken,
+  registerUser,
+};
