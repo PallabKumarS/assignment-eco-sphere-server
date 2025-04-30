@@ -1,15 +1,43 @@
 import { UserStatus } from '@prisma/client';
 import { z } from 'zod';
 
-const createUserValidation = z.object({
+const createUserValidationSchema = z.object({
   body: z.object({
     name: z.string({
       required_error: 'Name is required',
     }),
+    email: z
+      .string({
+        required_error: 'Email is required',
+      })
+      .email({
+        message: 'Invalid email address',
+      }),
+    password: z.string({
+      required_error: 'Password is required',
+    }),
   }),
 });
 
-const updateUserValidation = createUserValidation.partial();
+const updateUserValidationSchema = z.object({
+  body: z.object({
+    name: z
+      .string({
+        required_error: 'Name is required',
+      })
+      .optional(),
+    email: z
+      .string({
+        required_error: 'Email is required',
+      })
+      .email({
+        message: 'Invalid email address',
+      })
+      .optional(),
+    status: z.enum([UserStatus.ACTIVE, UserStatus.BLOCKED]).optional(),
+    role: z.enum(['ADMIN', 'MEMBER']).optional(),
+  }),
+});
 
 const updateStatusSchema = z.object({
   body: z.object({
@@ -18,7 +46,7 @@ const updateStatusSchema = z.object({
 });
 
 export const UserValidation = {
-  createUserValidation,
-  updateUserValidation,
+  createUserValidationSchema,
+  updateUserValidationSchema,
   updateStatusSchema,
 };

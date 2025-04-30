@@ -7,20 +7,26 @@ const getAllUserFromDB = async (): Promise<any> => {
   return result;
 };
 
-const getUserByIdService = async (id: string) => {
+const getUserByIdService = async (id: string): Promise<any> => {
   return prisma.user.findUnique({ where: { id } });
 };
 
-const updateUserByIdService = async (id: string, data: Partial<User>) => {
+const updateUserByIdService = async (
+  id: string,
+  data: Partial<User>,
+): Promise<any> => {
   return prisma.user.update({ where: { id }, data });
 };
 
-const deleteUserByIdService = async (id: string) => {
+const deleteUserByIdService = async (id: string): Promise<any> => {
   return prisma.user.delete({ where: { id } });
 };
 
-const updateProfileStatusService = async (id: string, status: UserRole) => {
-  const userData = await prisma.user.findUniqueOrThrow({
+const updateProfileStatusService = async (
+  id: string,
+  status: UserRole,
+): Promise<any> => {
+  await prisma.user.findUniqueOrThrow({
     where: {
       id,
     },
@@ -36,7 +42,7 @@ const updateProfileStatusService = async (id: string, status: UserRole) => {
   return updateStatus;
 };
 
-const getIdeasByUserService = async (id: string) => {
+const getIdeasByUserService = async (id: string): Promise<any> => {
   return await prisma.idea.findMany({
     where: {
       authorId: id,
@@ -47,7 +53,7 @@ const getIdeasByUserService = async (id: string) => {
   });
 };
 
-const getPurchasesByUserService = async (userId: string) => {
+const getPurchasesByUserService = async (userId: string): Promise<any> => {
   return await prisma.paidIdeaPurchase.findMany({
     where: { userId },
     include: {
