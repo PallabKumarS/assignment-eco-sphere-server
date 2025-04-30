@@ -1,79 +1,134 @@
-import { Idea, IdeaStatus } from '@prisma/client';
+import { Comment, Idea, IdeaStatus } from '@prisma/client';
 import prisma from '../../utils/prismaClient';
+import { AppError } from '../../errors/AppError';
+import httpStatus from 'http-status';
+import { JwtPayload } from 'jsonwebtoken';
+import { TIdea } from './idea.interface';
 
-const createIdeaService = async (data: Idea) => {
-    return await prisma.idea.create({
-        data
-    });
+const createIdeaService = async (
+  user: JwtPayload,
+  data: TIdea,
+): Promise<Idea> => {
+  const userExists = await prisma.user.findUnique({
+    where: { email: user.email },
+  });
+
+  if (!userExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  // new data for idea
+  const { categories, ...restData } = data;
+
+  const newData = {
+    ...restData,
+    authorId: userExists.id,
+    categories: {
+      connect: categories.map((id: string) => ({ id })),
+    },
+  };
+
+  const idea = await prisma.idea.create({
+    data: newData,
+  });
+
+  if (!idea) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create idea');
+  }
+
+  return idea;
 };
 
-const getAllIdeasService = async (query?: { categoryId?: string; search?: string }) => {
-    const { categoryId, search } = query || {};
+const getAllIdeasService = async (query?: {
+  categoryId?: string;
+  search?: string;
+}): Promise<Idea[]> => {
+  const { categoryId, search } = query ?? {};
 
-    return await prisma.idea.findMany({
-        where: {
-            status: 'APPROVED',
-            ...(categoryId && { categoryId }),
-            ...(search && {
-                OR: [
-                    { title: { contains: search, mode: 'insensitive' } },
-                    { problem: { contains: search, mode: 'insensitive' } },
-                ],
-            }),
-        },
-        orderBy: { createdAt: 'desc' },
-    });
+  return await prisma.idea.findMany({
+    where: {
+      status: 'APPROVED',
+      ...(categoryId && { categoryId }),
+      ...(search && {
+        OR: [
+          { title: { contains: search, mode: 'insensitive' } },
+          { problem: { contains: search, mode: 'insensitive' } },
+        ],
+      }),
+    },
+    orderBy: { createdAt: 'desc' },
+  });
 };
 
-const getIdeaByIdService = async (id: string) => {
-    return await prisma.idea.findUnique({
-        where: { id },
-        include: {
-            author: true,
-            categories: true,
-        },
-    });
+const getIdeaByIdService = async (id: string): Promise<Idea | null> => {
+  const idea = await prisma.idea.findUnique({
+    where: { id },
+    include: {
+      author: true,
+      categories: true,
+    },
+  });
+
+  if (!idea) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Idea not found');
+  }
+  return idea;
 };
 
-const updateIdeaService = async (id: string, data: Partial<Idea>) => {
-    return await prisma.idea.update({
-        where: { id },
-        data,
-    });
+const updateIdeaService = async (
+  id: string,
+  data: Partial<Idea>,
+): Promise<Idea> => {
+  return await prisma.idea.update({
+    where: { id },
+    data,
+  });
 };
 
-const deleteIdeaService = async (id: string) => {
-    return await prisma.idea.delete({ where: { id } });
+const deleteIdeaService = async (id: string): Promise<null> => {
+  await prisma.idea.delete({ where: { id } });
+
+  return null;
 };
 
-const changeIdeaStatusService = async (id: string, status: IdeaStatus, feedback?: string) => {
-    return await prisma.idea.update({
-        where: { id },
-        data: { status, feedback },
-    });
+const changeIdeaStatusService = async (
+  id: string,
+  status: IdeaStatus,
+  feedback?: string,
+): Promise<Idea> => {
+  return await prisma.idea.update({
+    where: { id },
+    data: { status, feedback },
+  });
 };
 
-const getIdeaCommentsService = async (ideaId: string) => {
-    return await prisma.comment.findMany({
-        where: { ideaId },
-        orderBy: { createdAt: 'asc' },
-    });
+const getIdeaCommentsService = async (ideaId: string): Promise<Comment[]> => {
+  return await prisma.comment.findMany({
+    where: { ideaId },
+    orderBy: { createdAt: 'asc' },
+  });
 };
 
-const getIdeaVotesService = async (ideaId: string) => {
-    const upvotes = await prisma.vote.count({ where: { ideaId, type: 'UPVOTE' } });
-    const downvotes = await prisma.vote.count({ where: { ideaId, type: 'DOWNVOTE' } });
+const getIdeaVotesService = async (
+  ideaId: string,
+): Promise<{ upVotes: number; downVotes: number }> => {
+  const upVotes = await prisma.vote.count({
+    where: { ideaId, type: 'UPVOTE' },
+  });
+  const downVotes = await prisma.vote.count({
+    where: { ideaId, type: 'DOWNVOTE' },
+  });
 
-    return { upvotes, downvotes };
+  return { upVotes, downVotes };
 };
 
 export const IdeaService = {
-    createIdeaService,
-    getAllIdeasService,
-    getIdeaByIdService,
-    updateIdeaService,
-    deleteIdeaService,
-    changeIdeaStatusService,
-    getIdeaCommentsService,
-    getIdeaVotesService,
+  createIdeaService,
+  getAllIdeasService,
+  getIdeaByIdService,
+  updateIdeaService,
+  deleteIdeaService,
+  changeIdeaStatusService,
+  getIdeaCommentsService,
+  getIdeaVotesService,
 };

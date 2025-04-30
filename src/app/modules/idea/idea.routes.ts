@@ -10,7 +10,7 @@ const router = Router();
 // Define routes
 router.post(
   "/",
-  // auth(UserRole.MEMBER),
+  auth(UserRole.MEMBER),
   validateRequest(IdeaValidation.createIdea),
   IdeaController.createIdea
 );

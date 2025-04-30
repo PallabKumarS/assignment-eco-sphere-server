@@ -5,7 +5,7 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 
 const createIdea = catchAsync(async (req: Request, res: Response) => {
-    const result = await IdeaService.createIdeaService(req.body);
+    const result = await IdeaService.createIdeaService(req.user,req.body);
 
     sendResponse(res, {
         statusCode: StatusCodes.CREATED,
