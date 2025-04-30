@@ -12,7 +12,7 @@ router.get("/", auth(UserRole.ADMIN), UserController.getAllUser);
 router.get("/:id", UserController.getUserById);
 router.get("/:id/ideas", auth(UserRole.ADMIN, UserRole.MEMBER), UserController.getIdeasByUser);
 router.get("/:id/purchases", auth(UserRole.ADMIN, UserRole.MEMBER), UserController.getPurchasesByUser);
-router.patch("/:id", auth(UserRole.ADMIN, UserRole.MEMBER), validateRequest(UserValidation.updateUserValidation), UserController.updateUserById);
+router.patch("/:id", auth(UserRole.ADMIN, UserRole.MEMBER), validateRequest(UserValidation.updateUserValidationSchema), UserController.updateUserById);
 router.delete("/:id", auth(UserRole.ADMIN), UserController.deleteUserById);
 router.patch("/:id/status", auth(UserRole.ADMIN), validateRequest(UserValidation.updateStatusSchema), UserController.updateProfileStatus);
 

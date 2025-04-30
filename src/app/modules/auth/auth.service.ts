@@ -6,13 +6,54 @@ import {
   isJWTIssuedBeforePasswordChanged,
   verifyToken,
 } from './auth.utils';
-import { TLoginUser } from './auth.interface';
 import { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import prisma from '../../utils/prismaClient';
+import { User } from '@prisma/client';
+
+// register user here
+const registerUser = async (payload: {
+  name: string;
+  password: string;
+  email: string;
+}): Promise<User> => {
+  // checking if the user is exist
+  const user = await prisma.user.findUnique({
+    where: {
+      email: payload.email,
+    },
+  });
+
+  if (user) {
+    throw new AppError(httpStatus.CONFLICT, 'This email is already taken !');
+  }
+
+  // hashing the password
+  const hashedPassword = await bcrypt.hash(
+    payload.password,
+    Number(config.bcrypt_salt_rounds as string),
+  );
+
+  const newUser = await prisma.user.create({
+    data: {
+      name: payload.name,
+      email: payload.email,
+      password: hashedPassword,
+    },
+  });
+
+  if (!newUser) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Something went wrong !');
+  }
+
+  return newUser;
+};
 
 // login user here
-const loginUser = async (payload: TLoginUser) => {
+const loginUser = async (payload: {
+  email: string;
+  password: string;
+}): Promise<{ accessToken: string; refreshToken: string }> => {
   // checking if the user is exist
   const user = await prisma.user.findUnique({
     where: {
@@ -62,17 +103,14 @@ const loginUser = async (payload: TLoginUser) => {
     config.jwt_refresh_expires_in as string,
   );
 
-  return {
-    accessToken,
-    refreshToken,
-  };
+  return { accessToken, refreshToken };
 };
 
 // change password here
 const changePassword = async (
   userData: JwtPayload,
   payload: { oldPassword: string; newPassword: string },
-) => {
+): Promise<null> => {
   // checking if the user is exist
   const user = await prisma.user.findUnique({
     where: {
@@ -122,7 +160,7 @@ const changePassword = async (
 };
 
 // refresh token here service here
-const refreshToken = async (token: string) => {
+const refreshToken = async (token: string): Promise<string> => {
   // checking if the given token is valid
   const decoded = verifyToken(token, config.jwt_refresh_secret as string);
 
@@ -168,13 +206,12 @@ const refreshToken = async (token: string) => {
     config.jwt_access_expires_in as string,
   );
 
-  return {
-    accessToken,
-  };
+  return accessToken;
 };
 
 export const AuthService = {
   loginUser,
   changePassword,
   refreshToken,
+  registerUser,
 };

@@ -10,14 +10,14 @@ const router = Router();
 // Define routes
 router.post(
   "/",
-  auth(UserRole.MEMBER),
+  // auth(UserRole.MEMBER),
   validateRequest(IdeaValidation.createIdea),
   IdeaController.createIdea
 );
 
 router.get(
   "/",
-  auth(UserRole.ADMIN),
+  auth(UserRole.ADMIN,UserRole.MEMBER),
   IdeaController.getAllIdeas
 );
 

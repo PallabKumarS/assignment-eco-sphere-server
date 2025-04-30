@@ -29,7 +29,6 @@ const getSingleCategoryFromDB = async (id: string): Promise<Category> => {
 const createCategoryInDB = async (data: {
   name: string;
 }): Promise<Category> => {
-  console.log(data);
 
   const result = await prisma.category.create({
     data,

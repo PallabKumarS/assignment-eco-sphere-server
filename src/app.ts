@@ -6,6 +6,7 @@ import { UserRoutes } from './app/modules/user/user.routes';
 import config from './app/config';
 import { CategoryRoutes } from './app/modules/category/category.routes';
 import { AuthRoutes } from './app/modules/auth/auth.routes';
+import { IdeaRoutes } from './app/modules/idea/idea.routes';
 
 const app: Application = express();
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', AuthRoutes);
 app.use('/api/users', UserRoutes);
 app.use('/api/categories', CategoryRoutes);
+app.use('/api/ideas', IdeaRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.send(`
