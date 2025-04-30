@@ -32,9 +32,7 @@ const getSingleCategory = catchAsync(async (req: Request, res: Response) => {
 
 // create category controller (admin)
 const createCategory = catchAsync(async (req: Request, res: Response) => {
-  const { categoryData } = req.body;
-
-  const data = await CategoryService.createCategoryInDB(categoryData);
+  const data = await CategoryService.createCategoryInDB(req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
@@ -47,9 +45,8 @@ const createCategory = catchAsync(async (req: Request, res: Response) => {
 // update category controller (admin)
 const updateCategory = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { categoryData } = req.body;
 
-  const data = await CategoryService.updateCategoryIntoDB(id, categoryData);
+  const data = await CategoryService.updateCategoryIntoDB(id, req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

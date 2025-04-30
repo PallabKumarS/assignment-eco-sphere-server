@@ -6,6 +6,7 @@ import handleZodError from '../errors/handleZodError';
 import { TErrorSources } from '../errors/error.interface';
 import { AppError } from '../errors/AppError';
 import jwt from 'jsonwebtoken';
+import handlePrismaValidationError from '../errors/handleValidationError';
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   //setting default values
@@ -42,6 +43,14 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   // zod error here
   if (err instanceof ZodError) {
     const simplifiedError = handleZodError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
+  }
+
+  // prisma validation error
+  if (err.name === 'PrismaClientValidationError') {
+    const simplifiedError = handlePrismaValidationError(err);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSources = simplifiedError?.errorSources;
