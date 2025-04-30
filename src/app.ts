@@ -4,6 +4,8 @@ import notFound from './app/middlewares/notFound';
 import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import { UserRoutes } from './app/modules/user/user.routes';
 import config from './app/config';
+import { CategoryRoutes } from './app/modules/category/category.routes';
+import { AuthRoutes } from './app/modules/auth/auth.routes';
 
 const app: Application = express();
 
@@ -18,7 +20,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // all routes here
+app.use('/api/auth', AuthRoutes);
 app.use('/api/users', UserRoutes);
+app.use('/api/categories', CategoryRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.send(`

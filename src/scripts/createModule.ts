@@ -46,11 +46,12 @@ export const ${capitalize(moduleName)}Routes = router;`;
 import { ${capitalize(moduleName)}Service } from "./${moduleName}.service";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
+import httpStatus from 'http-status';
 
 const getAll${capitalize(moduleName)} = catchAsync(async (req: Request, res: Response) => {
   const data = await ${capitalize(moduleName)}Service.getAll${capitalize(moduleName)}FromDB();
   sendResponse(res, {
-    statusCode: 200,
+    statusCode: httpStatus.OK,
     success: true,
     message: "${capitalize(moduleName)}s retrieved successfully",
     data,
@@ -83,6 +84,7 @@ export const ${capitalize(moduleName)}Validation = {
         content = `
         /* eslint-disable @typescript-eslint/no-explicit-any */
         import prisma from '../../utils/prismaClient';
+        import httpStatus from 'http-status';
 
 const getAll${capitalize(moduleName)}FromDB = async ():Promise<any> => {
   const result = await prisma.${moduleName}.findMany();

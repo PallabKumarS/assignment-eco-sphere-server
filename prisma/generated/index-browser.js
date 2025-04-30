@@ -152,7 +152,6 @@ exports.Prisma.IdeaScalarFieldEnum = {
   feedback: 'feedback',
   isPaid: 'isPaid',
   price: 'price',
-  categoryId: 'categoryId',
   authorId: 'authorId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

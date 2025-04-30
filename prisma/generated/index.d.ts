@@ -1440,11 +1440,11 @@ export namespace Prisma {
    */
 
   export type CategoryCountOutputType = {
-    idea: number
+    ideas: number
   }
 
   export type CategoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    idea?: boolean | CategoryCountOutputTypeCountIdeaArgs
+    ideas?: boolean | CategoryCountOutputTypeCountIdeasArgs
   }
 
   // Custom InputTypes
@@ -1461,7 +1461,7 @@ export namespace Prisma {
   /**
    * CategoryCountOutputType without action
    */
-  export type CategoryCountOutputTypeCountIdeaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CategoryCountOutputTypeCountIdeasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: IdeaWhereInput
   }
 
@@ -1471,12 +1471,14 @@ export namespace Prisma {
    */
 
   export type IdeaCountOutputType = {
+    categories: number
     vote: number
     comment: number
     paidIdeaPurchase: number
   }
 
   export type IdeaCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    categories?: boolean | IdeaCountOutputTypeCountCategoriesArgs
     vote?: boolean | IdeaCountOutputTypeCountVoteArgs
     comment?: boolean | IdeaCountOutputTypeCountCommentArgs
     paidIdeaPurchase?: boolean | IdeaCountOutputTypeCountPaidIdeaPurchaseArgs
@@ -1491,6 +1493,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the IdeaCountOutputType
      */
     select?: IdeaCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * IdeaCountOutputType without action
+   */
+  export type IdeaCountOutputTypeCountCategoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CategoryWhereInput
   }
 
   /**
@@ -2948,7 +2957,7 @@ export namespace Prisma {
   export type CategorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    idea?: boolean | Category$ideaArgs<ExtArgs>
+    ideas?: boolean | Category$ideasArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["category"]>
 
@@ -2969,7 +2978,7 @@ export namespace Prisma {
 
   export type CategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name", ExtArgs["result"]["category"]>
   export type CategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    idea?: boolean | Category$ideaArgs<ExtArgs>
+    ideas?: boolean | Category$ideasArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CategoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2978,7 +2987,7 @@ export namespace Prisma {
   export type $CategoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Category"
     objects: {
-      idea: Prisma.$IdeaPayload<ExtArgs>[]
+      ideas: Prisma.$IdeaPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3377,7 +3386,7 @@ export namespace Prisma {
    */
   export interface Prisma__CategoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    idea<T extends Category$ideaArgs<ExtArgs> = {}>(args?: Subset<T, Category$ideaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IdeaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ideas<T extends Category$ideasArgs<ExtArgs> = {}>(args?: Subset<T, Category$ideasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IdeaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3797,9 +3806,9 @@ export namespace Prisma {
   }
 
   /**
-   * Category.idea
+   * Category.ideas
    */
-  export type Category$ideaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Category$ideasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Idea
      */
@@ -3869,7 +3878,6 @@ export namespace Prisma {
     feedback: string | null
     isPaid: boolean | null
     price: number | null
-    categoryId: string | null
     authorId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -3885,7 +3893,6 @@ export namespace Prisma {
     feedback: string | null
     isPaid: boolean | null
     price: number | null
-    categoryId: string | null
     authorId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -3902,7 +3909,6 @@ export namespace Prisma {
     feedback: number
     isPaid: number
     price: number
-    categoryId: number
     authorId: number
     createdAt: number
     updatedAt: number
@@ -3928,7 +3934,6 @@ export namespace Prisma {
     feedback?: true
     isPaid?: true
     price?: true
-    categoryId?: true
     authorId?: true
     createdAt?: true
     updatedAt?: true
@@ -3944,7 +3949,6 @@ export namespace Prisma {
     feedback?: true
     isPaid?: true
     price?: true
-    categoryId?: true
     authorId?: true
     createdAt?: true
     updatedAt?: true
@@ -3961,7 +3965,6 @@ export namespace Prisma {
     feedback?: true
     isPaid?: true
     price?: true
-    categoryId?: true
     authorId?: true
     createdAt?: true
     updatedAt?: true
@@ -4065,7 +4068,6 @@ export namespace Prisma {
     feedback: string | null
     isPaid: boolean
     price: number | null
-    categoryId: string
     authorId: string
     createdAt: Date
     updatedAt: Date
@@ -4101,11 +4103,10 @@ export namespace Prisma {
     feedback?: boolean
     isPaid?: boolean
     price?: boolean
-    categoryId?: boolean
     authorId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    category?: boolean | CategoryDefaultArgs<ExtArgs>
+    categories?: boolean | Idea$categoriesArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     vote?: boolean | Idea$voteArgs<ExtArgs>
     comment?: boolean | Idea$commentArgs<ExtArgs>
@@ -4124,11 +4125,9 @@ export namespace Prisma {
     feedback?: boolean
     isPaid?: boolean
     price?: boolean
-    categoryId?: boolean
     authorId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    category?: boolean | CategoryDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["idea"]>
 
@@ -4143,11 +4142,9 @@ export namespace Prisma {
     feedback?: boolean
     isPaid?: boolean
     price?: boolean
-    categoryId?: boolean
     authorId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    category?: boolean | CategoryDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["idea"]>
 
@@ -4162,15 +4159,14 @@ export namespace Prisma {
     feedback?: boolean
     isPaid?: boolean
     price?: boolean
-    categoryId?: boolean
     authorId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type IdeaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "problem" | "solution" | "description" | "images" | "status" | "feedback" | "isPaid" | "price" | "categoryId" | "authorId" | "createdAt" | "updatedAt", ExtArgs["result"]["idea"]>
+  export type IdeaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "problem" | "solution" | "description" | "images" | "status" | "feedback" | "isPaid" | "price" | "authorId" | "createdAt" | "updatedAt", ExtArgs["result"]["idea"]>
   export type IdeaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    category?: boolean | CategoryDefaultArgs<ExtArgs>
+    categories?: boolean | Idea$categoriesArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     vote?: boolean | Idea$voteArgs<ExtArgs>
     comment?: boolean | Idea$commentArgs<ExtArgs>
@@ -4178,18 +4174,16 @@ export namespace Prisma {
     _count?: boolean | IdeaCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type IdeaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    category?: boolean | CategoryDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type IdeaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    category?: boolean | CategoryDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $IdeaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Idea"
     objects: {
-      category: Prisma.$CategoryPayload<ExtArgs>
+      categories: Prisma.$CategoryPayload<ExtArgs>[]
       author: Prisma.$UserPayload<ExtArgs>
       vote: Prisma.$VotePayload<ExtArgs>[]
       comment: Prisma.$CommentPayload<ExtArgs>[]
@@ -4206,7 +4200,6 @@ export namespace Prisma {
       feedback: string | null
       isPaid: boolean
       price: number | null
-      categoryId: string
       authorId: string
       createdAt: Date
       updatedAt: Date
@@ -4604,7 +4597,7 @@ export namespace Prisma {
    */
   export interface Prisma__IdeaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    category<T extends CategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CategoryDefaultArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    categories<T extends Idea$categoriesArgs<ExtArgs> = {}>(args?: Subset<T, Idea$categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     vote<T extends Idea$voteArgs<ExtArgs> = {}>(args?: Subset<T, Idea$voteArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     comment<T extends Idea$commentArgs<ExtArgs> = {}>(args?: Subset<T, Idea$commentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4648,7 +4641,6 @@ export namespace Prisma {
     readonly feedback: FieldRef<"Idea", 'String'>
     readonly isPaid: FieldRef<"Idea", 'Boolean'>
     readonly price: FieldRef<"Idea", 'Float'>
-    readonly categoryId: FieldRef<"Idea", 'String'>
     readonly authorId: FieldRef<"Idea", 'String'>
     readonly createdAt: FieldRef<"Idea", 'DateTime'>
     readonly updatedAt: FieldRef<"Idea", 'DateTime'>
@@ -5045,6 +5037,30 @@ export namespace Prisma {
      * Limit how many Ideas to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Idea.categories
+   */
+  export type Idea$categoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Category
+     */
+    select?: CategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Category
+     */
+    omit?: CategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CategoryInclude<ExtArgs> | null
+    where?: CategoryWhereInput
+    orderBy?: CategoryOrderByWithRelationInput | CategoryOrderByWithRelationInput[]
+    cursor?: CategoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CategoryScalarFieldEnum | CategoryScalarFieldEnum[]
   }
 
   /**
@@ -8471,7 +8487,6 @@ export namespace Prisma {
     feedback: 'feedback',
     isPaid: 'isPaid',
     price: 'price',
-    categoryId: 'categoryId',
     authorId: 'authorId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -8776,13 +8791,13 @@ export namespace Prisma {
     NOT?: CategoryWhereInput | CategoryWhereInput[]
     id?: StringFilter<"Category"> | string
     name?: StringFilter<"Category"> | string
-    idea?: IdeaListRelationFilter
+    ideas?: IdeaListRelationFilter
   }
 
   export type CategoryOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    idea?: IdeaOrderByRelationAggregateInput
+    ideas?: IdeaOrderByRelationAggregateInput
   }
 
   export type CategoryWhereUniqueInput = Prisma.AtLeast<{
@@ -8791,7 +8806,7 @@ export namespace Prisma {
     AND?: CategoryWhereInput | CategoryWhereInput[]
     OR?: CategoryWhereInput[]
     NOT?: CategoryWhereInput | CategoryWhereInput[]
-    idea?: IdeaListRelationFilter
+    ideas?: IdeaListRelationFilter
   }, "id" | "name">
 
   export type CategoryOrderByWithAggregationInput = {
@@ -8824,11 +8839,10 @@ export namespace Prisma {
     feedback?: StringNullableFilter<"Idea"> | string | null
     isPaid?: BoolFilter<"Idea"> | boolean
     price?: FloatNullableFilter<"Idea"> | number | null
-    categoryId?: StringFilter<"Idea"> | string
     authorId?: StringFilter<"Idea"> | string
     createdAt?: DateTimeFilter<"Idea"> | Date | string
     updatedAt?: DateTimeFilter<"Idea"> | Date | string
-    category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
+    categories?: CategoryListRelationFilter
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     vote?: VoteListRelationFilter
     comment?: CommentListRelationFilter
@@ -8846,11 +8860,10 @@ export namespace Prisma {
     feedback?: SortOrderInput | SortOrder
     isPaid?: SortOrder
     price?: SortOrderInput | SortOrder
-    categoryId?: SortOrder
     authorId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    category?: CategoryOrderByWithRelationInput
+    categories?: CategoryOrderByRelationAggregateInput
     author?: UserOrderByWithRelationInput
     vote?: VoteOrderByRelationAggregateInput
     comment?: CommentOrderByRelationAggregateInput
@@ -8871,11 +8884,10 @@ export namespace Prisma {
     feedback?: StringNullableFilter<"Idea"> | string | null
     isPaid?: BoolFilter<"Idea"> | boolean
     price?: FloatNullableFilter<"Idea"> | number | null
-    categoryId?: StringFilter<"Idea"> | string
     authorId?: StringFilter<"Idea"> | string
     createdAt?: DateTimeFilter<"Idea"> | Date | string
     updatedAt?: DateTimeFilter<"Idea"> | Date | string
-    category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
+    categories?: CategoryListRelationFilter
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     vote?: VoteListRelationFilter
     comment?: CommentListRelationFilter
@@ -8893,7 +8905,6 @@ export namespace Prisma {
     feedback?: SortOrderInput | SortOrder
     isPaid?: SortOrder
     price?: SortOrderInput | SortOrder
-    categoryId?: SortOrder
     authorId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8918,7 +8929,6 @@ export namespace Prisma {
     feedback?: StringNullableWithAggregatesFilter<"Idea"> | string | null
     isPaid?: BoolWithAggregatesFilter<"Idea"> | boolean
     price?: FloatNullableWithAggregatesFilter<"Idea"> | number | null
-    categoryId?: StringWithAggregatesFilter<"Idea"> | string
     authorId?: StringWithAggregatesFilter<"Idea"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Idea"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Idea"> | Date | string
@@ -9247,25 +9257,25 @@ export namespace Prisma {
   export type CategoryCreateInput = {
     id?: string
     name: string
-    idea?: IdeaCreateNestedManyWithoutCategoryInput
+    ideas?: IdeaCreateNestedManyWithoutCategoriesInput
   }
 
   export type CategoryUncheckedCreateInput = {
     id?: string
     name: string
-    idea?: IdeaUncheckedCreateNestedManyWithoutCategoryInput
+    ideas?: IdeaUncheckedCreateNestedManyWithoutCategoriesInput
   }
 
   export type CategoryUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    idea?: IdeaUpdateManyWithoutCategoryNestedInput
+    ideas?: IdeaUpdateManyWithoutCategoriesNestedInput
   }
 
   export type CategoryUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    idea?: IdeaUncheckedUpdateManyWithoutCategoryNestedInput
+    ideas?: IdeaUncheckedUpdateManyWithoutCategoriesNestedInput
   }
 
   export type CategoryCreateManyInput = {
@@ -9296,7 +9306,7 @@ export namespace Prisma {
     price?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    category: CategoryCreateNestedOneWithoutIdeaInput
+    categories?: CategoryCreateNestedManyWithoutIdeasInput
     author: UserCreateNestedOneWithoutIdeasInput
     vote?: VoteCreateNestedManyWithoutIdeaInput
     comment?: CommentCreateNestedManyWithoutIdeaInput
@@ -9314,10 +9324,10 @@ export namespace Prisma {
     feedback?: string | null
     isPaid?: boolean
     price?: number | null
-    categoryId: string
     authorId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    categories?: CategoryUncheckedCreateNestedManyWithoutIdeasInput
     vote?: VoteUncheckedCreateNestedManyWithoutIdeaInput
     comment?: CommentUncheckedCreateNestedManyWithoutIdeaInput
     paidIdeaPurchase?: PaidIdeaPurchaseUncheckedCreateNestedManyWithoutIdeaInput
@@ -9336,7 +9346,7 @@ export namespace Prisma {
     price?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: CategoryUpdateOneRequiredWithoutIdeaNestedInput
+    categories?: CategoryUpdateManyWithoutIdeasNestedInput
     author?: UserUpdateOneRequiredWithoutIdeasNestedInput
     vote?: VoteUpdateManyWithoutIdeaNestedInput
     comment?: CommentUpdateManyWithoutIdeaNestedInput
@@ -9354,10 +9364,10 @@ export namespace Prisma {
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: NullableFloatFieldUpdateOperationsInput | number | null
-    categoryId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categories?: CategoryUncheckedUpdateManyWithoutIdeasNestedInput
     vote?: VoteUncheckedUpdateManyWithoutIdeaNestedInput
     comment?: CommentUncheckedUpdateManyWithoutIdeaNestedInput
     paidIdeaPurchase?: PaidIdeaPurchaseUncheckedUpdateManyWithoutIdeaNestedInput
@@ -9374,7 +9384,6 @@ export namespace Prisma {
     feedback?: string | null
     isPaid?: boolean
     price?: number | null
-    categoryId: string
     authorId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9406,7 +9415,6 @@ export namespace Prisma {
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: NullableFloatFieldUpdateOperationsInput | number | null
-    categoryId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9888,14 +9896,19 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type CategoryScalarRelationFilter = {
-    is?: CategoryWhereInput
-    isNot?: CategoryWhereInput
+  export type CategoryListRelationFilter = {
+    every?: CategoryWhereInput
+    some?: CategoryWhereInput
+    none?: CategoryWhereInput
   }
 
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
+  }
+
+  export type CategoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type IdeaCountOrderByAggregateInput = {
@@ -9909,7 +9922,6 @@ export namespace Prisma {
     feedback?: SortOrder
     isPaid?: SortOrder
     price?: SortOrder
-    categoryId?: SortOrder
     authorId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9929,7 +9941,6 @@ export namespace Prisma {
     feedback?: SortOrder
     isPaid?: SortOrder
     price?: SortOrder
-    categoryId?: SortOrder
     authorId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9945,7 +9956,6 @@ export namespace Prisma {
     feedback?: SortOrder
     isPaid?: SortOrder
     price?: SortOrder
-    categoryId?: SortOrder
     authorId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10292,45 +10302,41 @@ export namespace Prisma {
     deleteMany?: PaidIdeaPurchaseScalarWhereInput | PaidIdeaPurchaseScalarWhereInput[]
   }
 
-  export type IdeaCreateNestedManyWithoutCategoryInput = {
-    create?: XOR<IdeaCreateWithoutCategoryInput, IdeaUncheckedCreateWithoutCategoryInput> | IdeaCreateWithoutCategoryInput[] | IdeaUncheckedCreateWithoutCategoryInput[]
-    connectOrCreate?: IdeaCreateOrConnectWithoutCategoryInput | IdeaCreateOrConnectWithoutCategoryInput[]
-    createMany?: IdeaCreateManyCategoryInputEnvelope
+  export type IdeaCreateNestedManyWithoutCategoriesInput = {
+    create?: XOR<IdeaCreateWithoutCategoriesInput, IdeaUncheckedCreateWithoutCategoriesInput> | IdeaCreateWithoutCategoriesInput[] | IdeaUncheckedCreateWithoutCategoriesInput[]
+    connectOrCreate?: IdeaCreateOrConnectWithoutCategoriesInput | IdeaCreateOrConnectWithoutCategoriesInput[]
     connect?: IdeaWhereUniqueInput | IdeaWhereUniqueInput[]
   }
 
-  export type IdeaUncheckedCreateNestedManyWithoutCategoryInput = {
-    create?: XOR<IdeaCreateWithoutCategoryInput, IdeaUncheckedCreateWithoutCategoryInput> | IdeaCreateWithoutCategoryInput[] | IdeaUncheckedCreateWithoutCategoryInput[]
-    connectOrCreate?: IdeaCreateOrConnectWithoutCategoryInput | IdeaCreateOrConnectWithoutCategoryInput[]
-    createMany?: IdeaCreateManyCategoryInputEnvelope
+  export type IdeaUncheckedCreateNestedManyWithoutCategoriesInput = {
+    create?: XOR<IdeaCreateWithoutCategoriesInput, IdeaUncheckedCreateWithoutCategoriesInput> | IdeaCreateWithoutCategoriesInput[] | IdeaUncheckedCreateWithoutCategoriesInput[]
+    connectOrCreate?: IdeaCreateOrConnectWithoutCategoriesInput | IdeaCreateOrConnectWithoutCategoriesInput[]
     connect?: IdeaWhereUniqueInput | IdeaWhereUniqueInput[]
   }
 
-  export type IdeaUpdateManyWithoutCategoryNestedInput = {
-    create?: XOR<IdeaCreateWithoutCategoryInput, IdeaUncheckedCreateWithoutCategoryInput> | IdeaCreateWithoutCategoryInput[] | IdeaUncheckedCreateWithoutCategoryInput[]
-    connectOrCreate?: IdeaCreateOrConnectWithoutCategoryInput | IdeaCreateOrConnectWithoutCategoryInput[]
-    upsert?: IdeaUpsertWithWhereUniqueWithoutCategoryInput | IdeaUpsertWithWhereUniqueWithoutCategoryInput[]
-    createMany?: IdeaCreateManyCategoryInputEnvelope
+  export type IdeaUpdateManyWithoutCategoriesNestedInput = {
+    create?: XOR<IdeaCreateWithoutCategoriesInput, IdeaUncheckedCreateWithoutCategoriesInput> | IdeaCreateWithoutCategoriesInput[] | IdeaUncheckedCreateWithoutCategoriesInput[]
+    connectOrCreate?: IdeaCreateOrConnectWithoutCategoriesInput | IdeaCreateOrConnectWithoutCategoriesInput[]
+    upsert?: IdeaUpsertWithWhereUniqueWithoutCategoriesInput | IdeaUpsertWithWhereUniqueWithoutCategoriesInput[]
     set?: IdeaWhereUniqueInput | IdeaWhereUniqueInput[]
     disconnect?: IdeaWhereUniqueInput | IdeaWhereUniqueInput[]
     delete?: IdeaWhereUniqueInput | IdeaWhereUniqueInput[]
     connect?: IdeaWhereUniqueInput | IdeaWhereUniqueInput[]
-    update?: IdeaUpdateWithWhereUniqueWithoutCategoryInput | IdeaUpdateWithWhereUniqueWithoutCategoryInput[]
-    updateMany?: IdeaUpdateManyWithWhereWithoutCategoryInput | IdeaUpdateManyWithWhereWithoutCategoryInput[]
+    update?: IdeaUpdateWithWhereUniqueWithoutCategoriesInput | IdeaUpdateWithWhereUniqueWithoutCategoriesInput[]
+    updateMany?: IdeaUpdateManyWithWhereWithoutCategoriesInput | IdeaUpdateManyWithWhereWithoutCategoriesInput[]
     deleteMany?: IdeaScalarWhereInput | IdeaScalarWhereInput[]
   }
 
-  export type IdeaUncheckedUpdateManyWithoutCategoryNestedInput = {
-    create?: XOR<IdeaCreateWithoutCategoryInput, IdeaUncheckedCreateWithoutCategoryInput> | IdeaCreateWithoutCategoryInput[] | IdeaUncheckedCreateWithoutCategoryInput[]
-    connectOrCreate?: IdeaCreateOrConnectWithoutCategoryInput | IdeaCreateOrConnectWithoutCategoryInput[]
-    upsert?: IdeaUpsertWithWhereUniqueWithoutCategoryInput | IdeaUpsertWithWhereUniqueWithoutCategoryInput[]
-    createMany?: IdeaCreateManyCategoryInputEnvelope
+  export type IdeaUncheckedUpdateManyWithoutCategoriesNestedInput = {
+    create?: XOR<IdeaCreateWithoutCategoriesInput, IdeaUncheckedCreateWithoutCategoriesInput> | IdeaCreateWithoutCategoriesInput[] | IdeaUncheckedCreateWithoutCategoriesInput[]
+    connectOrCreate?: IdeaCreateOrConnectWithoutCategoriesInput | IdeaCreateOrConnectWithoutCategoriesInput[]
+    upsert?: IdeaUpsertWithWhereUniqueWithoutCategoriesInput | IdeaUpsertWithWhereUniqueWithoutCategoriesInput[]
     set?: IdeaWhereUniqueInput | IdeaWhereUniqueInput[]
     disconnect?: IdeaWhereUniqueInput | IdeaWhereUniqueInput[]
     delete?: IdeaWhereUniqueInput | IdeaWhereUniqueInput[]
     connect?: IdeaWhereUniqueInput | IdeaWhereUniqueInput[]
-    update?: IdeaUpdateWithWhereUniqueWithoutCategoryInput | IdeaUpdateWithWhereUniqueWithoutCategoryInput[]
-    updateMany?: IdeaUpdateManyWithWhereWithoutCategoryInput | IdeaUpdateManyWithWhereWithoutCategoryInput[]
+    update?: IdeaUpdateWithWhereUniqueWithoutCategoriesInput | IdeaUpdateWithWhereUniqueWithoutCategoriesInput[]
+    updateMany?: IdeaUpdateManyWithWhereWithoutCategoriesInput | IdeaUpdateManyWithWhereWithoutCategoriesInput[]
     deleteMany?: IdeaScalarWhereInput | IdeaScalarWhereInput[]
   }
 
@@ -10338,10 +10344,10 @@ export namespace Prisma {
     set: string[]
   }
 
-  export type CategoryCreateNestedOneWithoutIdeaInput = {
-    create?: XOR<CategoryCreateWithoutIdeaInput, CategoryUncheckedCreateWithoutIdeaInput>
-    connectOrCreate?: CategoryCreateOrConnectWithoutIdeaInput
-    connect?: CategoryWhereUniqueInput
+  export type CategoryCreateNestedManyWithoutIdeasInput = {
+    create?: XOR<CategoryCreateWithoutIdeasInput, CategoryUncheckedCreateWithoutIdeasInput> | CategoryCreateWithoutIdeasInput[] | CategoryUncheckedCreateWithoutIdeasInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutIdeasInput | CategoryCreateOrConnectWithoutIdeasInput[]
+    connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
   }
 
   export type UserCreateNestedOneWithoutIdeasInput = {
@@ -10369,6 +10375,12 @@ export namespace Prisma {
     connectOrCreate?: PaidIdeaPurchaseCreateOrConnectWithoutIdeaInput | PaidIdeaPurchaseCreateOrConnectWithoutIdeaInput[]
     createMany?: PaidIdeaPurchaseCreateManyIdeaInputEnvelope
     connect?: PaidIdeaPurchaseWhereUniqueInput | PaidIdeaPurchaseWhereUniqueInput[]
+  }
+
+  export type CategoryUncheckedCreateNestedManyWithoutIdeasInput = {
+    create?: XOR<CategoryCreateWithoutIdeasInput, CategoryUncheckedCreateWithoutIdeasInput> | CategoryCreateWithoutIdeasInput[] | CategoryUncheckedCreateWithoutIdeasInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutIdeasInput | CategoryCreateOrConnectWithoutIdeasInput[]
+    connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
   }
 
   export type VoteUncheckedCreateNestedManyWithoutIdeaInput = {
@@ -10409,12 +10421,17 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type CategoryUpdateOneRequiredWithoutIdeaNestedInput = {
-    create?: XOR<CategoryCreateWithoutIdeaInput, CategoryUncheckedCreateWithoutIdeaInput>
-    connectOrCreate?: CategoryCreateOrConnectWithoutIdeaInput
-    upsert?: CategoryUpsertWithoutIdeaInput
-    connect?: CategoryWhereUniqueInput
-    update?: XOR<XOR<CategoryUpdateToOneWithWhereWithoutIdeaInput, CategoryUpdateWithoutIdeaInput>, CategoryUncheckedUpdateWithoutIdeaInput>
+  export type CategoryUpdateManyWithoutIdeasNestedInput = {
+    create?: XOR<CategoryCreateWithoutIdeasInput, CategoryUncheckedCreateWithoutIdeasInput> | CategoryCreateWithoutIdeasInput[] | CategoryUncheckedCreateWithoutIdeasInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutIdeasInput | CategoryCreateOrConnectWithoutIdeasInput[]
+    upsert?: CategoryUpsertWithWhereUniqueWithoutIdeasInput | CategoryUpsertWithWhereUniqueWithoutIdeasInput[]
+    set?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    disconnect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    delete?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    update?: CategoryUpdateWithWhereUniqueWithoutIdeasInput | CategoryUpdateWithWhereUniqueWithoutIdeasInput[]
+    updateMany?: CategoryUpdateManyWithWhereWithoutIdeasInput | CategoryUpdateManyWithWhereWithoutIdeasInput[]
+    deleteMany?: CategoryScalarWhereInput | CategoryScalarWhereInput[]
   }
 
   export type UserUpdateOneRequiredWithoutIdeasNestedInput = {
@@ -10465,6 +10482,19 @@ export namespace Prisma {
     update?: PaidIdeaPurchaseUpdateWithWhereUniqueWithoutIdeaInput | PaidIdeaPurchaseUpdateWithWhereUniqueWithoutIdeaInput[]
     updateMany?: PaidIdeaPurchaseUpdateManyWithWhereWithoutIdeaInput | PaidIdeaPurchaseUpdateManyWithWhereWithoutIdeaInput[]
     deleteMany?: PaidIdeaPurchaseScalarWhereInput | PaidIdeaPurchaseScalarWhereInput[]
+  }
+
+  export type CategoryUncheckedUpdateManyWithoutIdeasNestedInput = {
+    create?: XOR<CategoryCreateWithoutIdeasInput, CategoryUncheckedCreateWithoutIdeasInput> | CategoryCreateWithoutIdeasInput[] | CategoryUncheckedCreateWithoutIdeasInput[]
+    connectOrCreate?: CategoryCreateOrConnectWithoutIdeasInput | CategoryCreateOrConnectWithoutIdeasInput[]
+    upsert?: CategoryUpsertWithWhereUniqueWithoutIdeasInput | CategoryUpsertWithWhereUniqueWithoutIdeasInput[]
+    set?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    disconnect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    delete?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    connect?: CategoryWhereUniqueInput | CategoryWhereUniqueInput[]
+    update?: CategoryUpdateWithWhereUniqueWithoutIdeasInput | CategoryUpdateWithWhereUniqueWithoutIdeasInput[]
+    updateMany?: CategoryUpdateManyWithWhereWithoutIdeasInput | CategoryUpdateManyWithWhereWithoutIdeasInput[]
+    deleteMany?: CategoryScalarWhereInput | CategoryScalarWhereInput[]
   }
 
   export type VoteUncheckedUpdateManyWithoutIdeaNestedInput = {
@@ -10910,7 +10940,7 @@ export namespace Prisma {
     price?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    category: CategoryCreateNestedOneWithoutIdeaInput
+    categories?: CategoryCreateNestedManyWithoutIdeasInput
     vote?: VoteCreateNestedManyWithoutIdeaInput
     comment?: CommentCreateNestedManyWithoutIdeaInput
     paidIdeaPurchase?: PaidIdeaPurchaseCreateNestedManyWithoutIdeaInput
@@ -10927,9 +10957,9 @@ export namespace Prisma {
     feedback?: string | null
     isPaid?: boolean
     price?: number | null
-    categoryId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    categories?: CategoryUncheckedCreateNestedManyWithoutIdeasInput
     vote?: VoteUncheckedCreateNestedManyWithoutIdeaInput
     comment?: CommentUncheckedCreateNestedManyWithoutIdeaInput
     paidIdeaPurchase?: PaidIdeaPurchaseUncheckedCreateNestedManyWithoutIdeaInput
@@ -11053,7 +11083,6 @@ export namespace Prisma {
     feedback?: StringNullableFilter<"Idea"> | string | null
     isPaid?: BoolFilter<"Idea"> | boolean
     price?: FloatNullableFilter<"Idea"> | number | null
-    categoryId?: StringFilter<"Idea"> | string
     authorId?: StringFilter<"Idea"> | string
     createdAt?: DateTimeFilter<"Idea"> | Date | string
     updatedAt?: DateTimeFilter<"Idea"> | Date | string
@@ -11142,7 +11171,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"PaidIdeaPurchase"> | Date | string
   }
 
-  export type IdeaCreateWithoutCategoryInput = {
+  export type IdeaCreateWithoutCategoriesInput = {
     id?: string
     title: string
     problem: string
@@ -11161,7 +11190,7 @@ export namespace Prisma {
     paidIdeaPurchase?: PaidIdeaPurchaseCreateNestedManyWithoutIdeaInput
   }
 
-  export type IdeaUncheckedCreateWithoutCategoryInput = {
+  export type IdeaUncheckedCreateWithoutCategoriesInput = {
     id?: string
     title: string
     problem: string
@@ -11180,45 +11209,40 @@ export namespace Prisma {
     paidIdeaPurchase?: PaidIdeaPurchaseUncheckedCreateNestedManyWithoutIdeaInput
   }
 
-  export type IdeaCreateOrConnectWithoutCategoryInput = {
+  export type IdeaCreateOrConnectWithoutCategoriesInput = {
     where: IdeaWhereUniqueInput
-    create: XOR<IdeaCreateWithoutCategoryInput, IdeaUncheckedCreateWithoutCategoryInput>
+    create: XOR<IdeaCreateWithoutCategoriesInput, IdeaUncheckedCreateWithoutCategoriesInput>
   }
 
-  export type IdeaCreateManyCategoryInputEnvelope = {
-    data: IdeaCreateManyCategoryInput | IdeaCreateManyCategoryInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type IdeaUpsertWithWhereUniqueWithoutCategoryInput = {
+  export type IdeaUpsertWithWhereUniqueWithoutCategoriesInput = {
     where: IdeaWhereUniqueInput
-    update: XOR<IdeaUpdateWithoutCategoryInput, IdeaUncheckedUpdateWithoutCategoryInput>
-    create: XOR<IdeaCreateWithoutCategoryInput, IdeaUncheckedCreateWithoutCategoryInput>
+    update: XOR<IdeaUpdateWithoutCategoriesInput, IdeaUncheckedUpdateWithoutCategoriesInput>
+    create: XOR<IdeaCreateWithoutCategoriesInput, IdeaUncheckedCreateWithoutCategoriesInput>
   }
 
-  export type IdeaUpdateWithWhereUniqueWithoutCategoryInput = {
+  export type IdeaUpdateWithWhereUniqueWithoutCategoriesInput = {
     where: IdeaWhereUniqueInput
-    data: XOR<IdeaUpdateWithoutCategoryInput, IdeaUncheckedUpdateWithoutCategoryInput>
+    data: XOR<IdeaUpdateWithoutCategoriesInput, IdeaUncheckedUpdateWithoutCategoriesInput>
   }
 
-  export type IdeaUpdateManyWithWhereWithoutCategoryInput = {
+  export type IdeaUpdateManyWithWhereWithoutCategoriesInput = {
     where: IdeaScalarWhereInput
-    data: XOR<IdeaUpdateManyMutationInput, IdeaUncheckedUpdateManyWithoutCategoryInput>
+    data: XOR<IdeaUpdateManyMutationInput, IdeaUncheckedUpdateManyWithoutCategoriesInput>
   }
 
-  export type CategoryCreateWithoutIdeaInput = {
+  export type CategoryCreateWithoutIdeasInput = {
     id?: string
     name: string
   }
 
-  export type CategoryUncheckedCreateWithoutIdeaInput = {
+  export type CategoryUncheckedCreateWithoutIdeasInput = {
     id?: string
     name: string
   }
 
-  export type CategoryCreateOrConnectWithoutIdeaInput = {
+  export type CategoryCreateOrConnectWithoutIdeasInput = {
     where: CategoryWhereUniqueInput
-    create: XOR<CategoryCreateWithoutIdeaInput, CategoryUncheckedCreateWithoutIdeaInput>
+    create: XOR<CategoryCreateWithoutIdeasInput, CategoryUncheckedCreateWithoutIdeasInput>
   }
 
   export type UserCreateWithoutIdeasInput = {
@@ -11342,25 +11366,28 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type CategoryUpsertWithoutIdeaInput = {
-    update: XOR<CategoryUpdateWithoutIdeaInput, CategoryUncheckedUpdateWithoutIdeaInput>
-    create: XOR<CategoryCreateWithoutIdeaInput, CategoryUncheckedCreateWithoutIdeaInput>
-    where?: CategoryWhereInput
+  export type CategoryUpsertWithWhereUniqueWithoutIdeasInput = {
+    where: CategoryWhereUniqueInput
+    update: XOR<CategoryUpdateWithoutIdeasInput, CategoryUncheckedUpdateWithoutIdeasInput>
+    create: XOR<CategoryCreateWithoutIdeasInput, CategoryUncheckedCreateWithoutIdeasInput>
   }
 
-  export type CategoryUpdateToOneWithWhereWithoutIdeaInput = {
-    where?: CategoryWhereInput
-    data: XOR<CategoryUpdateWithoutIdeaInput, CategoryUncheckedUpdateWithoutIdeaInput>
+  export type CategoryUpdateWithWhereUniqueWithoutIdeasInput = {
+    where: CategoryWhereUniqueInput
+    data: XOR<CategoryUpdateWithoutIdeasInput, CategoryUncheckedUpdateWithoutIdeasInput>
   }
 
-  export type CategoryUpdateWithoutIdeaInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
+  export type CategoryUpdateManyWithWhereWithoutIdeasInput = {
+    where: CategoryScalarWhereInput
+    data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyWithoutIdeasInput>
   }
 
-  export type CategoryUncheckedUpdateWithoutIdeaInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
+  export type CategoryScalarWhereInput = {
+    AND?: CategoryScalarWhereInput | CategoryScalarWhereInput[]
+    OR?: CategoryScalarWhereInput[]
+    NOT?: CategoryScalarWhereInput | CategoryScalarWhereInput[]
+    id?: StringFilter<"Category"> | string
+    name?: StringFilter<"Category"> | string
   }
 
   export type UserUpsertWithoutIdeasInput = {
@@ -11516,7 +11543,7 @@ export namespace Prisma {
     price?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    category: CategoryCreateNestedOneWithoutIdeaInput
+    categories?: CategoryCreateNestedManyWithoutIdeasInput
     author: UserCreateNestedOneWithoutIdeasInput
     comment?: CommentCreateNestedManyWithoutIdeaInput
     paidIdeaPurchase?: PaidIdeaPurchaseCreateNestedManyWithoutIdeaInput
@@ -11533,10 +11560,10 @@ export namespace Prisma {
     feedback?: string | null
     isPaid?: boolean
     price?: number | null
-    categoryId: string
     authorId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    categories?: CategoryUncheckedCreateNestedManyWithoutIdeasInput
     comment?: CommentUncheckedCreateNestedManyWithoutIdeaInput
     paidIdeaPurchase?: PaidIdeaPurchaseUncheckedCreateNestedManyWithoutIdeaInput
   }
@@ -11619,7 +11646,7 @@ export namespace Prisma {
     price?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: CategoryUpdateOneRequiredWithoutIdeaNestedInput
+    categories?: CategoryUpdateManyWithoutIdeasNestedInput
     author?: UserUpdateOneRequiredWithoutIdeasNestedInput
     comment?: CommentUpdateManyWithoutIdeaNestedInput
     paidIdeaPurchase?: PaidIdeaPurchaseUpdateManyWithoutIdeaNestedInput
@@ -11636,10 +11663,10 @@ export namespace Prisma {
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: NullableFloatFieldUpdateOperationsInput | number | null
-    categoryId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categories?: CategoryUncheckedUpdateManyWithoutIdeasNestedInput
     comment?: CommentUncheckedUpdateManyWithoutIdeaNestedInput
     paidIdeaPurchase?: PaidIdeaPurchaseUncheckedUpdateManyWithoutIdeaNestedInput
   }
@@ -11700,7 +11727,7 @@ export namespace Prisma {
     price?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    category: CategoryCreateNestedOneWithoutIdeaInput
+    categories?: CategoryCreateNestedManyWithoutIdeasInput
     author: UserCreateNestedOneWithoutIdeasInput
     vote?: VoteCreateNestedManyWithoutIdeaInput
     paidIdeaPurchase?: PaidIdeaPurchaseCreateNestedManyWithoutIdeaInput
@@ -11717,10 +11744,10 @@ export namespace Prisma {
     feedback?: string | null
     isPaid?: boolean
     price?: number | null
-    categoryId: string
     authorId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    categories?: CategoryUncheckedCreateNestedManyWithoutIdeasInput
     vote?: VoteUncheckedCreateNestedManyWithoutIdeaInput
     paidIdeaPurchase?: PaidIdeaPurchaseUncheckedCreateNestedManyWithoutIdeaInput
   }
@@ -11858,7 +11885,7 @@ export namespace Prisma {
     price?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: CategoryUpdateOneRequiredWithoutIdeaNestedInput
+    categories?: CategoryUpdateManyWithoutIdeasNestedInput
     author?: UserUpdateOneRequiredWithoutIdeasNestedInput
     vote?: VoteUpdateManyWithoutIdeaNestedInput
     paidIdeaPurchase?: PaidIdeaPurchaseUpdateManyWithoutIdeaNestedInput
@@ -11875,10 +11902,10 @@ export namespace Prisma {
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: NullableFloatFieldUpdateOperationsInput | number | null
-    categoryId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categories?: CategoryUncheckedUpdateManyWithoutIdeasNestedInput
     vote?: VoteUncheckedUpdateManyWithoutIdeaNestedInput
     paidIdeaPurchase?: PaidIdeaPurchaseUncheckedUpdateManyWithoutIdeaNestedInput
   }
@@ -11986,7 +12013,7 @@ export namespace Prisma {
     price?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    category: CategoryCreateNestedOneWithoutIdeaInput
+    categories?: CategoryCreateNestedManyWithoutIdeasInput
     author: UserCreateNestedOneWithoutIdeasInput
     vote?: VoteCreateNestedManyWithoutIdeaInput
     comment?: CommentCreateNestedManyWithoutIdeaInput
@@ -12003,10 +12030,10 @@ export namespace Prisma {
     feedback?: string | null
     isPaid?: boolean
     price?: number | null
-    categoryId: string
     authorId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    categories?: CategoryUncheckedCreateNestedManyWithoutIdeasInput
     vote?: VoteUncheckedCreateNestedManyWithoutIdeaInput
     comment?: CommentUncheckedCreateNestedManyWithoutIdeaInput
   }
@@ -12089,7 +12116,7 @@ export namespace Prisma {
     price?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: CategoryUpdateOneRequiredWithoutIdeaNestedInput
+    categories?: CategoryUpdateManyWithoutIdeasNestedInput
     author?: UserUpdateOneRequiredWithoutIdeasNestedInput
     vote?: VoteUpdateManyWithoutIdeaNestedInput
     comment?: CommentUpdateManyWithoutIdeaNestedInput
@@ -12106,10 +12133,10 @@ export namespace Prisma {
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: NullableFloatFieldUpdateOperationsInput | number | null
-    categoryId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categories?: CategoryUncheckedUpdateManyWithoutIdeasNestedInput
     vote?: VoteUncheckedUpdateManyWithoutIdeaNestedInput
     comment?: CommentUncheckedUpdateManyWithoutIdeaNestedInput
   }
@@ -12125,7 +12152,6 @@ export namespace Prisma {
     feedback?: string | null
     isPaid?: boolean
     price?: number | null
-    categoryId: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -12166,7 +12192,7 @@ export namespace Prisma {
     price?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    category?: CategoryUpdateOneRequiredWithoutIdeaNestedInput
+    categories?: CategoryUpdateManyWithoutIdeasNestedInput
     vote?: VoteUpdateManyWithoutIdeaNestedInput
     comment?: CommentUpdateManyWithoutIdeaNestedInput
     paidIdeaPurchase?: PaidIdeaPurchaseUpdateManyWithoutIdeaNestedInput
@@ -12183,9 +12209,9 @@ export namespace Prisma {
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: NullableFloatFieldUpdateOperationsInput | number | null
-    categoryId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categories?: CategoryUncheckedUpdateManyWithoutIdeasNestedInput
     vote?: VoteUncheckedUpdateManyWithoutIdeaNestedInput
     comment?: CommentUncheckedUpdateManyWithoutIdeaNestedInput
     paidIdeaPurchase?: PaidIdeaPurchaseUncheckedUpdateManyWithoutIdeaNestedInput
@@ -12202,7 +12228,6 @@ export namespace Prisma {
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: NullableFloatFieldUpdateOperationsInput | number | null
-    categoryId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12278,23 +12303,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type IdeaCreateManyCategoryInput = {
-    id?: string
-    title: string
-    problem: string
-    solution: string
-    description: string
-    images?: IdeaCreateimagesInput | string[]
-    status?: $Enums.IdeaStatus
-    feedback?: string | null
-    isPaid?: boolean
-    price?: number | null
-    authorId: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type IdeaUpdateWithoutCategoryInput = {
+  export type IdeaUpdateWithoutCategoriesInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     problem?: StringFieldUpdateOperationsInput | string
@@ -12313,7 +12322,7 @@ export namespace Prisma {
     paidIdeaPurchase?: PaidIdeaPurchaseUpdateManyWithoutIdeaNestedInput
   }
 
-  export type IdeaUncheckedUpdateWithoutCategoryInput = {
+  export type IdeaUncheckedUpdateWithoutCategoriesInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     problem?: StringFieldUpdateOperationsInput | string
@@ -12332,7 +12341,7 @@ export namespace Prisma {
     paidIdeaPurchase?: PaidIdeaPurchaseUncheckedUpdateManyWithoutIdeaNestedInput
   }
 
-  export type IdeaUncheckedUpdateManyWithoutCategoryInput = {
+  export type IdeaUncheckedUpdateManyWithoutCategoriesInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     problem?: StringFieldUpdateOperationsInput | string
@@ -12369,6 +12378,21 @@ export namespace Prisma {
     id?: string
     userId: string
     createdAt?: Date | string
+  }
+
+  export type CategoryUpdateWithoutIdeasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type CategoryUncheckedUpdateWithoutIdeasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type CategoryUncheckedUpdateManyWithoutIdeasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
   }
 
   export type VoteUpdateWithoutIdeaInput = {
