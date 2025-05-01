@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { User, UserRole } from '@prisma/client';
 import prisma from '../../utils/prismaClient';
+import { AppError } from '../../errors/AppError';
 
 const getAllUserFromDB = async (): Promise<any> => {
   const result = await prisma.user.findMany();
@@ -63,13 +64,16 @@ const getPurchasesByUserService = async (userId: string): Promise<any> => {
   });
 };
 
-// get personal profile from db 
+// get personal profile from db
 const getMeFromDB = async (email: string): Promise<any> => {
-  return await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
+
+  const user = await prisma.user.findUnique({ where: { email } });
+
+  if (!user) {
+    throw new AppError(404, 'User not found');
+  }
+
+  return user;
 };
 
 export const UserService = {
