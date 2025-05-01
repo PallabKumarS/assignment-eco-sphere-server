@@ -1,15 +1,15 @@
-import { Request, Response } from "express";
-import { UserService } from "./user.service";
-import catchAsync from "../../utils/catchAsync";
-import sendResponse from "../../utils/sendResponse";
-import { StatusCodes } from "http-status-codes";
+import { Request, Response } from 'express';
+import { UserService } from './user.service';
+import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
+import { StatusCodes } from 'http-status-codes';
 
 const getAllUser = catchAsync(async (req: Request, res: Response) => {
   const data = await UserService.getAllUserFromDB();
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: "Users retrieved successfully",
+    message: 'Users retrieved successfully',
     data,
   });
 });
@@ -20,7 +20,7 @@ const getUserById = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: "User retrieved successfully",
+    message: 'User retrieved successfully',
     data,
   });
 });
@@ -31,7 +31,7 @@ const updateUserById = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: "User updated successfully",
+    message: 'User updated successfully',
     data,
   });
 });
@@ -42,24 +42,24 @@ const deleteUserById = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: "User deleted successfully",
+    message: 'User deleted successfully',
     data,
   });
 });
 
-const updateProfileStatus = catchAsync(async(req, res) => {
+const updateProfileStatus = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await UserService.updateProfileStatusService(id, req.body);
 
   sendResponse(res, {
-      statusCode: StatusCodes.OK,
-      success: true,
-      message: 'Updated status successfully',
-      data: result
-  })    
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Updated status successfully',
+    data: result,
+  });
 });
 
-const getIdeasByUser = async (req: Request, res: Response) => {
+const getIdeasByUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const result = await UserService.getIdeasByUserService(id);
@@ -67,20 +67,30 @@ const getIdeasByUser = async (req: Request, res: Response) => {
     statusCode: StatusCodes.OK,
     success: true,
     message: 'Retrieved all ideas successfully',
-    data: result
-  }) 
+    data: result,
+  });
+});
+
+const getPurchasesByUser = catchAsync(
+  async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+
+    const result = await UserService.getPurchasesByUserService(id);
+    sendResponse(res, {
+      statusCode: StatusCodes.OK,
+      success: true,
+      message: 'Retrieved all purchased ideas successfully',
+      data: result,
+    });
+  },
+);
+
+export const UserController = {
+  getAllUser,
+  getUserById,
+  updateUserById,
+  deleteUserById,
+  updateProfileStatus,
+  getIdeasByUser,
+  getPurchasesByUser,
 };
-
-const getPurchasesByUser = async (req: Request, res: Response) => {
-  const { id } = req.params;
-
-  const result = await UserService.getPurchasesByUserService(id);
-  sendResponse(res, {
-    statusCode: StatusCodes.OK,
-    success: true,
-    message: 'Retrieved all purchased ideas successfully',
-    data: result
-  })
-};
-
-export const UserController = { getAllUser, getUserById, updateUserById, deleteUserById, updateProfileStatus, getIdeasByUser, getPurchasesByUser };

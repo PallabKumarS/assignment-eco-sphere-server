@@ -7,16 +7,13 @@ type TResponse<T> = {
   data: T | null;
 };
 
-const sendResponse = <T>(res: Response, data: TResponse<T>) => {
-  const response: any = {
+const sendResponse = <T>(res: Response, data: TResponse<T>): void => {
+  const response: TResponse<T> = {
     statusCode: data.statusCode,
     success: data.success,
     message: data.message,
+    data: data.data ?? null,
   };
-
-  if (data?.data) {
-    response.data = data.data;
-  }
 
   res.status(data?.statusCode).json(response);
 };

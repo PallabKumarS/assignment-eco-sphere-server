@@ -42,7 +42,7 @@ const createCommentIntoDB = async (ideaId: string, payload: Comment): Promise<Co
 };
 
 // create reply comment into db
-const replyToCommentIntoDB = async (parentId: string, payload: Comment) => {
+const replyToCommentIntoDB = async (parentId: string, payload: Comment):Promise<Comment> => {
     await prisma.comment.findUniqueOrThrow({ where: { id: parentId } });
 
     const result = await prisma.comment.create({
