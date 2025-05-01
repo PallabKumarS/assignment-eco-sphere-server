@@ -11,10 +11,16 @@ const router = Router();
 router.get('/', CommentController.getAllComment);
 
 router.post(
-  '/',
+  '/:ideaId',
   validateRequest(CommentValidation.createCommentValidation),
   CommentController.createComment,
 );
+
+router.post(
+  '/:parentId',
+  validateRequest(CommentValidation.createReplyValidation),
+  CommentController.replyToComment
+)
 
 router.patch(
   '/:id',

@@ -22,9 +22,12 @@ const getAllCommentFromDB = async (ideaId: string): Promise<Comment[]> => {
 };
 
 // create comment into db
-const createCommentIntoDB = async (payload: Comment): Promise<Comment> => {
+const createCommentIntoDB = async (ideaId: string, payload: Comment): Promise<Comment> => {
   const result = await prisma.comment.create({
-    data: payload,
+    data: {
+        ...payload,
+        ideaId
+    },
     include: {
       user: true,
       parent: true,
@@ -36,6 +39,28 @@ const createCommentIntoDB = async (payload: Comment): Promise<Comment> => {
   }
 
   return result;
+};
+
+// create reply comment into db
+const replyToCommentIntoDB = async (parentId: string, payload: Comment) => {
+    await prisma.comment.findUniqueOrThrow({ where: { id: parentId } });
+
+    const result = await prisma.comment.create({
+        data: {
+            ...payload,
+            parentId
+        },
+        include: {
+            user: true,
+            parent: true,
+        },
+    });
+
+    if (!result) {
+        throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create reply');
+    }
+
+    return result;
 };
 
 // update comment into db
@@ -77,4 +102,5 @@ export const CommentService = {
   createCommentIntoDB,
   updateCommentIntoDB,
   deleteCommentFromDB,
+  replyToCommentIntoDB
 };

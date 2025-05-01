@@ -20,13 +20,27 @@ const getAllComment = catchAsync(async (req: Request, res: Response) => {
 
 // create comment
 const createComment = catchAsync(async (req: Request, res: Response) => {
-  const data = await CommentService.createCommentIntoDB(req.body);
+  const { ideaId } = req.params;
+  const data = await CommentService.createCommentIntoDB(ideaId, req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Comment added successfully',
     data,
+  });
+});
+
+// reply comment
+const replyToComment = catchAsync(async (req: Request, res: Response) => {
+  const { parentId } = req.params;
+  const result = await CommentService.replyToCommentIntoDB(parentId, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: 'Reply added successfully',
+    data: result,
   });
 });
 
@@ -63,4 +77,5 @@ export const CommentController = {
   createComment,
   updateComment,
   deleteComment,
+  replyToComment
 };

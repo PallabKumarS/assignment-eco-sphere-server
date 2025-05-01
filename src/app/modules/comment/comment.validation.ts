@@ -17,7 +17,16 @@ const createCommentValidation = z.object({
 
 const updateCommentValidation = createCommentValidation.partial();
 
+// Schema for replying to a comment
+const createReplyValidation = z.object({
+    body: z.object({
+        content: z.string({ required_error: "Reply content is required" }).min(1, "Reply cannot be empty"),
+        authorId: z.string({ required_error: "Author ID is required" }).uuid("Invalid author ID"),
+    }),
+});
+
 export const CommentValidation = {
   createCommentValidation,
   updateCommentValidation,
+  createReplyValidation
 };
