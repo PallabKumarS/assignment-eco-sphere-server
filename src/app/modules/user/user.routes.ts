@@ -10,6 +10,7 @@ const router = Router();
 // Define routes
 router.get("/", auth(UserRole.ADMIN), UserController.getAllUser);
 router.get("/:id", UserController.getUserById);
+router.get("/me", auth(UserRole.ADMIN, UserRole.MEMBER), UserController.getMe);
 router.get("/:id/ideas", auth(UserRole.ADMIN, UserRole.MEMBER), UserController.getIdeasByUser);
 router.get("/:id/purchases", auth(UserRole.ADMIN, UserRole.MEMBER), UserController.getPurchasesByUser);
 router.patch("/:id", auth(UserRole.ADMIN, UserRole.MEMBER), validateRequest(UserValidation.updateUserValidationSchema), UserController.updateUserById);

@@ -1,4 +1,5 @@
 import express, { Application, Request, Response } from 'express';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import notFound from './app/middlewares/notFound';
 import globalErrorHandler from './app/middlewares/globalErrorhandler';
@@ -14,10 +15,11 @@ const app: Application = express();
 // parsers
 app.use(
   cors({
-    origin: [config.client as string, config.local_client as string],
+    origin: '*',
     credentials: true,
   }),
 );
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

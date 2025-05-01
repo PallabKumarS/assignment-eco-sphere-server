@@ -2,6 +2,7 @@ import { AuthService } from './auth.service';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
+import config from '../../config';
 
 // register user controller
 const registerUser = catchAsync(async (req, res) => {
@@ -20,17 +21,17 @@ const loginUser = catchAsync(async (req, res) => {
   const { accessToken, refreshToken } = await AuthService.loginUser(req.body);
 
   res.cookie('refreshToken', refreshToken, {
-    secure: true,
+    secure: config.node_env === 'production',
     httpOnly: true,
-    sameSite: 'none',
+    sameSite: true,
     maxAge: 1000 * 60 * 60 * 24 * 30,
   });
 
   res.cookie('accessToken', accessToken, {
-    secure: true,
+    secure: config.node_env === 'production',
     httpOnly: true,
-    sameSite: 'none',
-    maxAge: 1000 * 60 * 60 * 24,
+    sameSite: true,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
   });
 
   sendResponse(res, {
@@ -39,7 +40,7 @@ const loginUser = catchAsync(async (req, res) => {
     message: 'User is logged in successfully!',
     data: {
       accessToken,
-      // refreshToken,
+      refreshToken,
     },
   });
 });

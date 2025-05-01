@@ -63,6 +63,15 @@ const getPurchasesByUserService = async (userId: string): Promise<any> => {
   });
 };
 
+// get personal profile from db 
+const getMeFromDB = async (email: string): Promise<any> => {
+  return await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+};
+
 export const UserService = {
   getAllUserFromDB,
   getUserByIdService,
@@ -71,4 +80,5 @@ export const UserService = {
   updateProfileStatusService,
   getIdeasByUserService,
   getPurchasesByUserService,
+  getMeFromDB,
 };

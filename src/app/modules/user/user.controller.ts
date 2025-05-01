@@ -85,6 +85,20 @@ const getPurchasesByUser = catchAsync(
   },
 );
 
+// get personal profile
+const getMe = catchAsync(async (req: Request, res: Response) => {
+  const user = req.user;
+
+  const result = await UserService.getMeFromDB(user.email);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'User retrieved successfully',
+    data: result,
+  });
+});
+
 export const UserController = {
   getAllUser,
   getUserById,
@@ -93,4 +107,5 @@ export const UserController = {
   updateProfileStatus,
   getIdeasByUser,
   getPurchasesByUser,
+  getMe,
 };

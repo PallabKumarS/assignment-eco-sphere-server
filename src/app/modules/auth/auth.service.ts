@@ -16,6 +16,7 @@ const registerUser = async (payload: {
   name: string;
   password: string;
   email: string;
+  profilePhoto?: string;
 }): Promise<User> => {
   // checking if the user is exist
   const user = await prisma.user.findUnique({
