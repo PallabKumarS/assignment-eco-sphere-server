@@ -6,7 +6,7 @@ import { StatusCodes } from "http-status-codes";
 
 const voteOnIdea = catchAsync(async (req: Request, res: Response) => {
     const { id: ideaId } = req.params;
-    const userId = req.user?.id; // make sure `auth` middleware adds `req.user`
+    const userId = req.user?.userId; // make sure `auth` middleware adds `req.user`
     const { type } = req.body;
 
     const result = await VoteService.voteOnIdeaService(ideaId, userId, type);
@@ -20,7 +20,7 @@ const voteOnIdea = catchAsync(async (req: Request, res: Response) => {
 
 const removeVote = catchAsync(async (req: Request, res: Response) => {
     const { id: ideaId } = req.params;
-    const userId = req.user?.id;
+    const userId = req.user?.userId;
 
     const result = await VoteService.removeVoteService(ideaId, userId);
     sendResponse(res, {

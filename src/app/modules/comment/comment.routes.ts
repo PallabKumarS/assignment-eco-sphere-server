@@ -12,12 +12,14 @@ router.get('/', CommentController.getAllComment);
 
 router.post(
   '/:ideaId',
+  auth(UserRole.MEMBER),
   validateRequest(CommentValidation.createCommentValidation),
   CommentController.createComment,
 );
 
 router.post(
-  '/:parentId',
+  '/:parentId/reply',
+  auth(UserRole.MEMBER),
   validateRequest(CommentValidation.createReplyValidation),
   CommentController.replyToComment
 )

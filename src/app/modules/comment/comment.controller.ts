@@ -21,7 +21,8 @@ const getAllComment = catchAsync(async (req: Request, res: Response) => {
 // create comment
 const createComment = catchAsync(async (req: Request, res: Response) => {
   const { ideaId } = req.params;
-  const data = await CommentService.createCommentIntoDB(ideaId, req.body);
+  const userId = req.user?.userId;
+  const data = await CommentService.createCommentIntoDB(ideaId, userId, req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -34,7 +35,8 @@ const createComment = catchAsync(async (req: Request, res: Response) => {
 // reply comment
 const replyToComment = catchAsync(async (req: Request, res: Response) => {
   const { parentId } = req.params;
-  const result = await CommentService.replyToCommentIntoDB(parentId, req.body);
+  const userId = req.user?.userId;
+  const result = await CommentService.replyToCommentIntoDB(parentId, userId, req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
