@@ -96,7 +96,7 @@ const updateUserRoleIntoDB = async (
   return prisma.user
     .update({
       where: { id },
-      data: { role },
+      data: role,
     })
     .catch((error) => {
       throw new AppError(400, error.message);

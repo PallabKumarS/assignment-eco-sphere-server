@@ -47,7 +47,7 @@ const updateStatusSchema = z.object({
 
 const updateRoleSchema = z.object({
   body: z.object({
-    status: z.enum([UserRole.ADMIN, UserRole.MEMBER]),
+    role: z.enum([UserRole.ADMIN, UserRole.MEMBER]),
   }),
 });
 
