@@ -32,13 +32,20 @@ router.patch(
   UserController.updateUserById,
 );
 
-router.delete('/:id', auth(UserRole.ADMIN), UserController.deleteUserById);
-
 router.patch(
   '/:id/status',
   auth(UserRole.ADMIN),
   validateRequest(UserValidation.updateStatusSchema),
   UserController.updateProfileStatus,
 );
+
+router.patch(
+  '/:id/role',
+  auth(UserRole.ADMIN),
+  validateRequest(UserValidation.updateRoleSchema),
+  UserController.updateUserRole,
+);
+
+router.delete('/:id', auth(UserRole.ADMIN), UserController.deleteUserById);
 
 export const UserRoutes = router;
