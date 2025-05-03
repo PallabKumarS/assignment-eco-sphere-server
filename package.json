@@ -20,6 +20,7 @@
     "typescript": "^5.8.3"
   },
   "scripts": {
+    "postinstall": "prisma generate",
     "generate": "npx prisma generate",
     "migrate": "npx prisma migrate dev",
     "build": "npm run tsc",
