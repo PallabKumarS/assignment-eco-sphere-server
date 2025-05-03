@@ -3,12 +3,11 @@ import { UserService } from './user.service';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { StatusCodes } from 'http-status-codes';
-import pick from '../../utils/pick';
 
 const getAllUser = catchAsync(async (req: Request, res: Response) => {
-  const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
 
-  const data = await UserService.getAllUserFromDB(options);
+  const data = await UserService.getAllUserFromDB(req.query);
+
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,

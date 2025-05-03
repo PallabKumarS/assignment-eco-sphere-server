@@ -2,12 +2,33 @@ import { Category } from '@prisma/client';
 import { AppError } from '../../errors/AppError';
 import prisma from '../../utils/prismaClient';
 import httpStatus from 'http-status';
+import paginationHelper from '../../utils/paginationHelper';
+import { TMeta } from '../../utils/sendResponse';
 
 // get all categories from db
-const getAllCategoryFromDB = async (): Promise<Category[]> => {
-  const result = await prisma.category.findMany();
+const getAllCategoryFromDB = async (
+  query: Record<string, unknown>,
+): Promise<{ data: Category[]; meta: TMeta }> => {
+  const { limit, page, skip } = paginationHelper(query);
 
-  return result;
+  const result = await prisma.category.findMany({
+    skip,
+    take: limit,
+  });
+
+  const totalData = await prisma.category.count();
+
+  const totalPage = Math.ceil(totalData / limit);
+
+  return {
+    data: result,
+    meta: {
+      page,
+      limit,
+      totalData,
+      totalPage,
+    },
+  };
 };
 
 // get single category from db
@@ -29,7 +50,6 @@ const getSingleCategoryFromDB = async (id: string): Promise<Category> => {
 const createCategoryInDB = async (data: {
   name: string;
 }): Promise<Category> => {
-
   const result = await prisma.category.create({
     data,
   });

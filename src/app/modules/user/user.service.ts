@@ -2,12 +2,12 @@
 import { User, UserRole } from '@prisma/client';
 import prisma from '../../utils/prismaClient';
 import { AppError } from '../../errors/AppError';
-import { TPaginationOptions } from '../../interface/pagination';
-import { paginationHelper } from '../../utils/paginationHelper';
+import paginationHelper from '../../utils/paginationHelper';
 
-const getAllUserFromDB = async (options: TPaginationOptions): Promise<any> => {
-  const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelper.calculatePagination(options);
+const getAllUserFromDB = async (
+  query: Record<string, unknown>,
+): Promise<any> => {
+  const { page, limit, skip, sortBy, sortOrder } = paginationHelper(query);
 
   const result = await prisma.user.findMany({
     skip,
@@ -32,7 +32,12 @@ const getAllUserFromDB = async (options: TPaginationOptions): Promise<any> => {
 };
 
 const getUserByIdService = async (id: string): Promise<any> => {
-  return prisma.user.findUnique({ where: { id } });
+  return prisma.user.findUnique({
+    where: { id },
+    select: {
+      password: false,
+    },
+  });
 };
 
 const updateUserByIdService = async (

@@ -6,13 +6,14 @@ import httpStatus from 'http-status';
 
 // get all categories controller
 const getAllCategory = catchAsync(async (req: Request, res: Response) => {
-  const data = await CategoryService.getAllCategoryFromDB();
+  const data = await CategoryService.getAllCategoryFromDB(req.query);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Categories retrieved successfully',
-    data,
+    data: data.data,
+    meta: data.meta,
   });
 });
 
