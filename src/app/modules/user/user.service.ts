@@ -2,10 +2,33 @@
 import { User, UserRole } from '@prisma/client';
 import prisma from '../../utils/prismaClient';
 import { AppError } from '../../errors/AppError';
+import { TPaginationOptions } from '../../interface/pagination';
+import { paginationHelper } from '../../utils/paginationHelper';
 
-const getAllUserFromDB = async (): Promise<any> => {
-  const result = await prisma.user.findMany();
-  return result;
+const getAllUserFromDB = async (options: TPaginationOptions): Promise<any> => {
+  const { page, limit, skip, sortBy, sortOrder } =
+    paginationHelper.calculatePagination(options);
+
+  const result = await prisma.user.findMany({
+    skip,
+    take: limit,
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
+  });
+
+  const totalData = await prisma.user.count();
+  const totalPage = Math.ceil(totalData / limit);
+
+  return {
+    meta: {
+      page,
+      limit,
+      totalData,
+      totalPage,
+    },
+    data: result,
+  };
 };
 
 const getUserByIdService = async (id: string): Promise<any> => {
@@ -36,8 +59,6 @@ const updateProfileStatusService = async (
   if (!user) {
     throw new AppError(404, 'User not found');
   }
-
-  console.log(status);
 
   const updateStatus = await prisma.user.update({
     where: {
