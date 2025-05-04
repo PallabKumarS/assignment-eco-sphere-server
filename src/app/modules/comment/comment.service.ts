@@ -22,11 +22,12 @@ const getAllCommentFromDB = async (ideaId: string): Promise<Comment[]> => {
 };
 
 // create comment into db
-const createCommentIntoDB = async (ideaId: string, payload: Comment): Promise<Comment> => {
+const createCommentIntoDB = async (ideaId: string, userId: string, payload: Comment): Promise<Comment> => {
   const result = await prisma.comment.create({
     data: {
         ...payload,
-        ideaId
+        ideaId,
+        userId
     },
     include: {
       user: true,
@@ -42,17 +43,19 @@ const createCommentIntoDB = async (ideaId: string, payload: Comment): Promise<Co
 };
 
 // create reply comment into db
-const replyToCommentIntoDB = async (parentId: string, payload: Comment):Promise<Comment> => {
-    await prisma.comment.findUniqueOrThrow({ where: { id: parentId } });
+const replyToCommentIntoDB = async (parentId: string, userId: string, payload: Comment):Promise<Comment> => {
+    const comment = await prisma.comment.findUniqueOrThrow({ where: { id: parentId } });
 
     const result = await prisma.comment.create({
         data: {
-            ...payload,
-            parentId
+          ...payload,
+          ideaId: comment.ideaId,
+          parentId,
+          userId
         },
         include: {
-            user: true,
-            parent: true,
+          user: true,
+          parent: true,
         },
     });
 

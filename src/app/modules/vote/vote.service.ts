@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { VoteType } from '@prisma/client';
+import { Vote, VoteType } from '@prisma/client';
 import prisma from '../../utils/prismaClient';
 
 const voteOnIdeaService = async (
   ideaId: string,
   userId: string,
   type: VoteType,
-): Promise<any> => {
+): Promise<Vote> => {
   return await prisma.vote.upsert({
     where: {
       userId_ideaId: { userId, ideaId },
@@ -19,7 +19,7 @@ const voteOnIdeaService = async (
 const removeVoteService = async (
   ideaId: string,
   userId: string,
-): Promise<any> => {
+): Promise<Vote> => {
   return await prisma.vote.delete({
     where: {
       userId_ideaId: { userId, ideaId },

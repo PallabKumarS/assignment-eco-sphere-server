@@ -57,6 +57,9 @@ const getAllIdeasService = async (query?: {
       }),
     },
     orderBy: { createdAt: 'desc' },
+    include: {
+      categories: true
+    }
   });
 };
 

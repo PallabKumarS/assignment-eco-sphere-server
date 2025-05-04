@@ -9,6 +9,7 @@ import { CategoryRoutes } from './app/modules/category/category.routes';
 import { AuthRoutes } from './app/modules/auth/auth.routes';
 import { IdeaRoutes } from './app/modules/idea/idea.routes';
 import { CommentRoutes } from './app/modules/comment/comment.routes';
+import { VoteRoutes } from './app/modules/vote/vote.routes';
 
 const app: Application = express();
 
@@ -29,6 +30,7 @@ app.use('/api/users', UserRoutes);
 app.use('/api/categories', CategoryRoutes);
 app.use('/api/ideas', IdeaRoutes);
 app.use('/api/comments', CommentRoutes);
+app.use('/api/votes', VoteRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.send(`
