@@ -15,11 +15,9 @@ router.post(
   IdeaController.createIdea,
 );
 
-router.get(
-  '/',
-  auth(UserRole.ADMIN, UserRole.MEMBER),
-  IdeaController.getAllIdeas,
-);
+router.get('/', IdeaController.getAllIdeas);
+
+router.get('/personal', auth(UserRole.MEMBER), IdeaController.getPersonalIdeas);
 
 router.get(
   '/:id',
@@ -29,7 +27,7 @@ router.get(
 
 router.patch(
   '/:id',
-  auth(UserRole.MEMBER),
+  auth(UserRole.MEMBER, UserRole.ADMIN),
   validateRequest(IdeaValidation.updateIdea),
   IdeaController.updateIdea,
 );

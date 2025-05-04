@@ -1,9 +1,11 @@
-import { Idea, IdeaStatus } from '@prisma/client';
+import { Idea, IdeaStatus, Prisma } from '@prisma/client';
 import prisma from '../../utils/prismaClient';
 import { AppError } from '../../errors/AppError';
 import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
 import { TIdea } from './idea.interface';
+import { TMeta } from '../../utils/sendResponse';
+import paginationHelper from '../../utils/paginationHelper';
 
 const createIdeaService = async (
   user: JwtPayload,
@@ -41,26 +43,106 @@ const createIdeaService = async (
 
 const getAllIdeasService = async (query?: {
   categoryId?: string;
-  search?: string;
-}): Promise<Idea[]> => {
-  const { categoryId, search } = query ?? {};
+  searchTerm?: string;
+}): Promise<{ data: Idea[]; meta: TMeta }> => {
+  const { categoryId, searchTerm } = query ?? {};
+  const options = paginationHelper(query as Record<string, unknown>);
 
-  return await prisma.idea.findMany({
-    where: {
-      status: 'APPROVED',
-      ...(categoryId && { categoryId }),
-      ...(search && {
-        OR: [
-          { title: { contains: search, mode: 'insensitive' } },
-          { problem: { contains: search, mode: 'insensitive' } },
-        ],
-      }),
+  const whereConditions: Prisma.IdeaWhereInput = {
+    status: 'APPROVED',
+    ...(categoryId && { categoryId }),
+    ...(searchTerm && {
+      OR: [
+        { title: { contains: searchTerm, mode: 'insensitive' } },
+        { problem: { contains: searchTerm, mode: 'insensitive' } },
+      ],
+    }),
+  };
+
+  const data = await prisma.idea.findMany({
+    where: whereConditions,
+    orderBy: {
+      [options.sortBy]: options.sortOrder,
     },
-    orderBy: { createdAt: 'desc' },
+    skip: options.skip,
+    take: options.limit,
     include: {
-      categories: true
-    }
+      categories: true,
+      users: true,
+    },
   });
+
+  const total = await prisma.idea.count({
+    where: whereConditions,
+  });
+
+  const totalPages = Math.ceil(total / options.limit);
+
+  const meta = {
+    total,
+    page: options.page,
+    limit: options.limit,
+    totalPage: totalPages,
+    totalData: total,
+  };
+
+  return {
+    data,
+    meta,
+  };
+};
+
+// get personal ideas
+const getPersonalIdeasFromDB = async (
+  query: Record<string, unknown>,
+  user: JwtPayload,
+): Promise<{ data: Idea[]; meta: TMeta }> => {
+  const options = paginationHelper(query);
+
+  const whereConditions = {
+    authorId: user.id,
+    ...(typeof query.categoryId === 'string' && {
+      categoryId: query.categoryId,
+    }),
+    ...(typeof query.searchTerm === 'string' && {
+      OR: [
+        { title: { contains: query.searchTerm, mode: 'insensitive' } },
+        { problem: { contains: query.searchTerm, mode: 'insensitive' } },
+      ],
+    }),
+  } as Prisma.IdeaWhereInput;
+
+  const data = await prisma.idea.findMany({
+    where: whereConditions,
+    orderBy: {
+      [options.sortBy]: options.sortOrder,
+    },
+    skip: options.skip,
+    take: options.limit,
+    include: {
+      categories: true,
+      users: true,
+    },
+  });
+
+  const total = await prisma.idea.count({
+    where: whereConditions,
+  });
+
+  const totalPages = Math.ceil(total / options.limit);
+
+  const meta = {
+    total,
+    page: options.page,
+    limit: options.limit,
+    totalPage: totalPages,
+    totalData: total,
+  };
+
+  return {
+    data,
+    meta,
+  };
 };
 
 const getIdeaByIdService = async (id: string): Promise<Idea | null> => {
@@ -128,4 +210,5 @@ export const IdeaService = {
   deleteIdeaService,
   changeIdeaStatusService,
   getIdeaVotesService,
+  getPersonalIdeasFromDB,
 };

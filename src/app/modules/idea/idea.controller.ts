@@ -16,17 +16,27 @@ const createIdea = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllIdeas = catchAsync(async (req: Request, res: Response) => {
-  const { categoryId, search } = req.query;
-  const result = await IdeaService.getAllIdeasService({
-    categoryId: categoryId as string,
-    search: search as string,
-  });
+  const result = await IdeaService.getAllIdeasService(req.query);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
     message: 'Ideas retrieved successfully',
-    data: result,
+    data: result.data,
+    meta: result.meta,
+  });
+});
+
+// get personal ideas
+const getPersonalIdeas = catchAsync(async (req: Request, res: Response) => {
+  const result = await IdeaService.getPersonalIdeasFromDB(req.query,req.user);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Ideas retrieved successfully',
+    data: result.data,
+    meta: result.meta,
   });
 });
 
@@ -103,4 +113,5 @@ export const IdeaController = {
   deleteIdea,
   changeIdeaStatus,
   getIdeaVotes,
+  getPersonalIdeas,
 };
