@@ -16,7 +16,7 @@ const app: Application = express();
 // parsers
 app.use(
   cors({
-    origin: '*',
+    origin: [config.client as string, config.local_client as string],
     credentials: true,
   }),
 );
