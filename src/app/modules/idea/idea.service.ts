@@ -41,6 +41,7 @@ const createIdeaService = async (
   return idea;
 };
 
+// get all ideas from db
 const getAllIdeasService = async (query?: {
   categoryId?: string;
   searchTerm?: string;
@@ -58,6 +59,7 @@ const getAllIdeasService = async (query?: {
       ],
     }),
   };
+
 
   const data = await prisma.idea.findMany({
     where: whereConditions,
@@ -78,8 +80,7 @@ const getAllIdeasService = async (query?: {
 
   const totalPages = Math.ceil(total / options.limit);
 
-  const meta = {
-    total,
+  const meta:TMeta = {
     page: options.page,
     limit: options.limit,
     totalPage: totalPages,
@@ -131,8 +132,7 @@ const getPersonalIdeasFromDB = async (
 
   const totalPages = Math.ceil(total / options.limit);
 
-  const meta = {
-    total,
+  const meta:TMeta = {
     page: options.page,
     limit: options.limit,
     totalPage: totalPages,
