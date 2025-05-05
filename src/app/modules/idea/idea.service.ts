@@ -42,24 +42,23 @@ const createIdeaService = async (
 };
 
 // get all ideas from db
-const getAllIdeasService = async (query?: {
-  categoryId?: string;
-  searchTerm?: string;
-}): Promise<{ data: Idea[]; meta: TMeta }> => {
-  const { categoryId, searchTerm } = query ?? {};
-  const options = paginationHelper(query as Record<string, unknown>);
+const getAllIdeasService = async (
+  query: Record<string, unknown>,
+): Promise<{ data: Idea[]; meta: TMeta }> => {
+  const options = paginationHelper(query);
 
   const whereConditions: Prisma.IdeaWhereInput = {
-    status: 'APPROVED',
-    ...(categoryId && { categoryId }),
-    ...(searchTerm && {
+    status: (query.status as IdeaStatus) || 'APPROVED',
+    ...(typeof query.categoryId === 'string' && {
+      categoryId: query.categoryId,
+    }),
+    ...(typeof query.searchTerm === 'string' && {
       OR: [
-        { title: { contains: searchTerm, mode: 'insensitive' } },
-        { problem: { contains: searchTerm, mode: 'insensitive' } },
+        { title: { contains: query.searchTerm, mode: 'insensitive' } },
+        { problem: { contains: query.searchTerm, mode: 'insensitive' } },
       ],
     }),
   };
-
 
   const data = await prisma.idea.findMany({
     where: whereConditions,
@@ -80,7 +79,7 @@ const getAllIdeasService = async (query?: {
 
   const totalPages = Math.ceil(total / options.limit);
 
-  const meta:TMeta = {
+  const meta: TMeta = {
     page: options.page,
     limit: options.limit,
     totalPage: totalPages,
@@ -132,7 +131,7 @@ const getPersonalIdeasFromDB = async (
 
   const totalPages = Math.ceil(total / options.limit);
 
-  const meta:TMeta = {
+  const meta: TMeta = {
     page: options.page,
     limit: options.limit,
     totalPage: totalPages,
