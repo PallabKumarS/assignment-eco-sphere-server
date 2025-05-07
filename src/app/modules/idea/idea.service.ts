@@ -45,12 +45,16 @@ const createIdeaService = async (
 const getAllIdeasService = async (query?: {
   categoryId?: string;
   searchTerm?: string;
+  status?: IdeaStatus;
 }): Promise<{ data: Idea[]; meta: TMeta }> => {
-  const { categoryId, searchTerm } = query ?? {};
+  const { categoryId, searchTerm, status } = query ?? {};
+
+  console.log(query,"searchTerm");
+
   const options = paginationHelper(query as Record<string, unknown>);
 
   const whereConditions: Prisma.IdeaWhereInput = {
-    status: 'APPROVED',
+    ...(status && { status: 'APPROVED' }),
     ...(categoryId && { categoryId }),
     ...(searchTerm && {
       OR: [
@@ -59,7 +63,6 @@ const getAllIdeasService = async (query?: {
       ],
     }),
   };
-
 
   const data = await prisma.idea.findMany({
     where: whereConditions,
@@ -80,7 +83,7 @@ const getAllIdeasService = async (query?: {
 
   const totalPages = Math.ceil(total / options.limit);
 
-  const meta:TMeta = {
+  const meta: TMeta = {
     page: options.page,
     limit: options.limit,
     totalPage: totalPages,
@@ -132,7 +135,7 @@ const getPersonalIdeasFromDB = async (
 
   const totalPages = Math.ceil(total / options.limit);
 
-  const meta:TMeta = {
+  const meta: TMeta = {
     page: options.page,
     limit: options.limit,
     totalPage: totalPages,
@@ -183,10 +186,23 @@ const changeIdeaStatusService = async (
   status: IdeaStatus,
   feedback?: string,
 ): Promise<Idea> => {
-  return await prisma.idea.update({
+  const idea = await prisma.idea.findUnique({
     where: { id },
-    data: { status, feedback },
   });
+
+  if (!idea) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Idea not found');
+  }
+
+  const updatedIdea = await prisma.idea.update({
+    where: { id },
+    data: {
+      status,
+      feedback,
+    },
+  });
+
+  return updatedIdea;
 };
 
 const getIdeaVotesService = async (
