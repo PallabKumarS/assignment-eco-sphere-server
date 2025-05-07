@@ -8,7 +8,7 @@ import { UserRole } from '@prisma/client';
 const router = Router();
 
 // Define routes
-router.get('/', CommentController.getAllComment);
+router.get('/:id', CommentController.getAllComment);
 
 router.post(
   '/:ideaId',
