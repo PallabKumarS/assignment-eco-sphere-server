@@ -50,7 +50,6 @@ const getAllIdeasService = async (query?: {
 }): Promise<{ data: Idea[]; meta: TMeta }> => {
   const { categoryId, searchTerm, status, isPaid } = query ?? {};
 
-  console.log(categoryId, isPaid);
 
   const options = paginationHelper(query as Record<string, unknown>);
 
