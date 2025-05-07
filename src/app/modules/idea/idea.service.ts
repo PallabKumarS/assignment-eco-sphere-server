@@ -164,11 +164,20 @@ const getIdeaByIdService = async (id: string): Promise<Idea | null> => {
 
 const updateIdeaService = async (
   id: string,
-  data: Partial<Idea>,
-): Promise<Idea> => {
+  data: Partial<TIdea>,
+): Promise<any> => {
+  const { categories, ...restData } = data;
+
+  const newData = {
+    ...restData,
+    categories: {
+      connect: categories?.map((id: string) => ({ id })),
+    },
+  };
+
   return await prisma.idea.update({
     where: { id },
-    data,
+    data: newData,
   });
 };
 
