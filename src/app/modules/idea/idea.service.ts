@@ -165,7 +165,7 @@ const getIdeaByIdService = async (id: string): Promise<Idea | null> => {
 const updateIdeaService = async (
   id: string,
   data: Partial<TIdea>,
-): Promise<any> => {
+): Promise<Idea> => {
   const { categories, ...restData } = data;
 
   const newData = {
