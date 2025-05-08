@@ -50,12 +50,11 @@ const getAllIdeasService = async (query?: {
 }): Promise<{ data: Idea[]; meta: TMeta }> => {
   const { categoryId, searchTerm, status, isPaid } = query ?? {};
 
-
   const options = paginationHelper(query as Record<string, unknown>);
 
   const whereConditions: Prisma.IdeaWhereInput = {
-    ...(status && { status: 'APPROVED' }),
-    ...(categoryId && { categoryId:categoryId }),
+    ...(status && { status: status }),
+    ...(categoryId && { categoryId: categoryId }),
     ...(isPaid && { isPaid: isPaid === 'true' }),
     ...(searchTerm && {
       OR: [
@@ -75,6 +74,7 @@ const getAllIdeasService = async (query?: {
     include: {
       categories: true,
       users: true,
+      paidIdeaPurchase: true,
     },
   });
 
