@@ -75,15 +75,30 @@ const createPaymentIntoDB = async (
   client_ip: string,
   data: PaidIdeaPurchase,
 ): Promise<PaidIdeaPurchase | null> => {
-  const paymentData = await prisma.paidIdeaPurchase.create({
-    data: {
+  let paymentData = null;
+
+  const paymentExists = await prisma.paidIdeaPurchase.findFirst({
+    where: {
       ideaId: data.ideaId,
       amount: data.amount,
-    },
-    include: {
-      idea: true,
+      transactionStatus: 'INITIATED',
     },
   });
+
+  if (!paymentExists) {
+    paymentData = await prisma.paidIdeaPurchase.create({
+      data: {
+        ideaId: data.ideaId,
+        amount: data.amount,
+        transactionStatus: 'INITIATED',
+      },
+      include: {
+        idea: true,
+      },
+    });
+  } else {
+    paymentData = paymentExists;
+  }
 
   if (!paymentData) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create payment');
