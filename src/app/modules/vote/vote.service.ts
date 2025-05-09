@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Vote, VoteType } from '@prisma/client';
 import prisma from '../../utils/prismaClient';
 

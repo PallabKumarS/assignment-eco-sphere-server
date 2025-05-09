@@ -15,6 +15,7 @@ const getAllCommentFromDB = async (ideaId: string): Promise<Comment[]> => {
     include: {
       user: true,
       parent: true,
+      replies: true,
     },
   });
 

@@ -53,7 +53,7 @@ const getAllIdeasService = async (query?: {
   const options = paginationHelper(query as Record<string, unknown>);
 
   const whereConditions: Prisma.IdeaWhereInput = {
-    ...(status && { status: status }),
+    ...(status ? { status: status } : { status: { not: 'DRAFT' } }),
     ...(categoryId && { categoryId: categoryId }),
     ...(isPaid && { isPaid: isPaid === 'true' }),
     ...(searchTerm && {
@@ -75,6 +75,8 @@ const getAllIdeasService = async (query?: {
       categories: true,
       users: true,
       paidIdeaPurchase: true,
+      votes: true,
+      comments: true,
     },
   });
 
@@ -127,6 +129,12 @@ const getPersonalIdeasFromDB = async (
     include: {
       categories: true,
       users: true,
+      _count: {
+        select: {
+          votes: true,
+          comments: true,
+        },
+      },
     },
   });
 
@@ -157,6 +165,7 @@ const getIdeaByIdService = async (id: string): Promise<Idea | null> => {
       categories: true,
       votes: true,
       comments: true,
+      paidIdeaPurchase: true,
     },
   });
 
