@@ -169,7 +169,7 @@ POST   /api/payments/:id/verify   – Verify a payment
 ## 👥 Contributors
 
 - [Pallab Kumar Sarker](https://github.com/PallabKumarS)
-- [Co-contributor Name](https://github.com/theMorshed)
+- [Manjur Morshed](https://github.com/theMorshed)
 
 ---
 
