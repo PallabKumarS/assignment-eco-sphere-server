@@ -1,6 +1,6 @@
-# Bike Service Management System
+# Eco Sphere Server
 
-A backend API built with **Node.js**, **Express.js**, **TypeScript**, **Prisma ORM**, and **PostgreSQL** for managing customers, bikes, and service records in a bike servicing center.
+A backend API built with **Node.js**, **Express.js**, **TypeScript**, **Prisma ORM**, and **PostgreSQL** for managing eco-friendly ideas and contributions.
 
 ---
 
@@ -25,10 +25,9 @@ A backend API built with **Node.js**, **Express.js**, **TypeScript**, **Prisma O
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/PallabKumarS/assignment-08-prisma.git
+git clone https://github.com/PallabKumarS/assignment-09-eco-sphere-server.git
 
-cd assignment-08-prisma
-
+cd assignment-09-eco-sphere-server
 ```
 
 ### 2. Install Dependencies
@@ -50,54 +49,132 @@ bun run dev
 Create a `.env` file and configure the following:
 
 ```
-DATABASE_URL="your mongodb uri"
+DATABASE_URL="your postgresql connection string"
 NODE_ENV="development"
 PORT=5000
 ```
 
 ## API Routes
 
-### Customers Management
+### Categories
 
 ```
-POST /api/customers – Create a new customer
+POST   /api/auth/register         – Register a new user
 
-GET /api/customers – Get all customers
+POST   /api/auth/login            – Login user
 
-GET /api/customers/:customerId – Get customer by ID
+PATCH  /api/auth/change-password  – Change user password
 
-PUT /api/customers/:customerId – Update customer
+POST   /api/auth/refresh-token    – Refresh access token
 
-DELETE /api/customers/:customerId – Delete customer
-```
-
-### Bikes Management
 
 ```
-POST /api/bikes – Add a bike
 
-GET /api/bikes – List all bikes
-
-GET /api/bikes/:bikeId – Get a bike by ID
-```
-
-### Service Records Management
+### Categories
 
 ```
-POST /api/services – Create service record
+GET    /api/categories            – Get all categories
 
-GET /api/services – List all service records
+GET    /api/categories/:id        – Get category by ID
 
-GET /api/services/:serviceId – Get service record
+POST   /api/categories            – Create a new category (Admin only)
 
-PUT /api/services/:serviceId/complete – Mark service as completed
+PATCH  /api/categories/:id        – Update a category (Admin only)
 
-GET /api/services/status – List pending or overdue services (older than 7 days)
+DELETE /api/categories/:id        – Delete a category (Admin only)
+
 
 ```
+
+### Users
+
+```
+GET    /api/users                 – Get all users (Admin only)
+
+GET    /api/users/me              – Get logged-in user's profile
+
+GET    /api/users/:id             – Get user by ID
+
+GET    /api/users/:id/ideas       – Get all ideas by a user
+
+GET    /api/users/:id/purchases   – Get user's purchases
+
+PATCH  /api/users/:id             – Update user info
+
+PATCH  /api/users/:id/status      – Change user account status
+
+PATCH  /api/users/:id/role        – Change user role
+
+DELETE /api/users/:id             – Delete user (Admin only)
+
+
+
+```
+
+### Ideas
+
+```
+POST   /api/ideas                 – Submit a new idea (Member only)
+
+GET    /api/ideas                 – Get all ideas
+
+GET    /api/ideas/personal        – Get logged-in user's ideas
+
+GET    /api/ideas/:id             – Get an idea by ID
+
+PATCH  /api/ideas/:id             – Update an idea (Author/Admin only)
+
+DELETE /api/ideas/:id             – Delete an idea (Author/Admin only)
+
+PATCH  /api/ideas/:id/status      – Change idea status (Admin only)
+
+GET    /api/ideas/:id/votes       – Get votes on an idea
+```
+
+### Comments
+
+```
+GET    /api/comments/:id          – Get all comments for an idea
+
+POST   /api/comments/:ideaId      – Add a comment (Member only)
+
+POST   /api/comments/:parentId/reply – Reply to a comment
+
+PATCH  /api/comments/:id          – Update a comment (Author/Admin)
+
+DELETE /api/comments/:id          – Delete a comment (Author/Admin)
+
+```
+
+### Votes
+
+```
+POST   /api/votes/:id/vote        – Vote on an idea (Member only)
+
+DELETE /api/votes/:id/vote        – Remove vote from an idea
+```
+
+### Payments
+
+```
+GET    /api/payments              – Get all payment records
+
+GET    /api/payments/:id          – Get a single payment
+
+POST   /api/payments              – Create a payment
+
+POST   /api/payments/:id/verify   – Verify a payment
+```
+
+## 👥 Contributors
+
+- [Pallab Kumar Sarker](https://github.com/PallabKumarS)
+- [Co-contributor Name](https://github.com/theMorshed)
+
+---
 
 ## Live Server
 
-[Backend Live Link](https://pks-assignment-08-prisma.vercel.app)
+[Backend Live Link](https://pks-eco-sphere-server.vercel.app)
 
-[GitHub Repository](https://github.com/PallabKumarS/assignment-08-prisma)
+[GitHub Repository](https://github.com/PallabKumarS/assignment-09-eco-sphere-server)
