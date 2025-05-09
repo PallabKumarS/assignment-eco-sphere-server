@@ -96,8 +96,8 @@ model Comment {
 
 model PaidIdeaPurchase {
   id                String    @id @default(uuid())
-  userId            String
-  user              User      @relation(fields: [userId], references: [id])
+  userId            String?
+  user              User?      @relation(fields: [userId], references: [id])
   ideaId            String
   idea              Idea      @relation(fields: [ideaId], references: [id])
   paymentId         String?

@@ -76,10 +76,12 @@ const createPaymentIntoDB = async (
   data: PaidIdeaPurchase,
 ): Promise<PaidIdeaPurchase | null> => {
   const paymentData = await prisma.paidIdeaPurchase.create({
-    data,
+    data: {
+      ideaId: data.ideaId,
+      amount: data.amount,
+    },
     include: {
       idea: true,
-      user: true,
     },
   });
 
@@ -87,14 +89,18 @@ const createPaymentIntoDB = async (
     throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create payment');
   }
 
+  const userData = await prisma.user.findFirst({
+    where: { id: data.userId || '' },
+  });
+
   const shurjopayPayload = {
     amount: paymentData?.amount,
     order_id: paymentData.id,
     currency: 'BDT',
-    customer_name: paymentData?.user.name,
-    customer_address: paymentData?.user.address ?? 'N/A',
-    customer_email: paymentData?.user.email,
-    customer_phone: paymentData?.user?.contactNumber ?? 'N/A',
+    customer_name: userData?.name,
+    customer_address: userData?.address ?? 'N/A',
+    customer_email: userData?.email,
+    customer_phone: userData?.contactNumber ?? 'N/A',
     customer_city: 'N/A',
     client_ip,
   };
@@ -124,6 +130,9 @@ const createPaymentIntoDB = async (
 // verify payment
 const verifyPaymentFromDB = async (
   paymentId: string,
+  data: {
+    userId: string;
+  },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> => {
   const paymentExists = await prisma.paidIdeaPurchase.findFirst({
@@ -142,6 +151,7 @@ const verifyPaymentFromDB = async (
     updatedPayment = await prisma.paidIdeaPurchase.update({
       where: { id: paymentExists.id },
       data: {
+        userId: data.userId,
         transactionStatus:
           payment[0].bank_status == 'Success'
             ? 'PAID'

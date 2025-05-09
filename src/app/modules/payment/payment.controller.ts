@@ -43,7 +43,10 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
 
 // verify payment
 const verifyPayment = catchAsync(async (req: Request, res: Response) => {
-  const result = await PaymentService.verifyPaymentFromDB(req.params.id);
+  const result = await PaymentService.verifyPaymentFromDB(
+    req.params.id,
+    req.body,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
