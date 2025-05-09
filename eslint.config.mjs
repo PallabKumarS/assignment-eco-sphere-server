@@ -28,6 +28,7 @@ export default [
       '@typescript-eslint/no-unnecessary-type-assertion': 'warn',
       '@typescript-eslint/prefer-optional-chain': 'warn',
       '@typescript-eslint/prefer-nullish-coalescing': 'warn',
+      '@typescript-eslint/no-non-null-assertion': 'off',
     },
   },
 ];

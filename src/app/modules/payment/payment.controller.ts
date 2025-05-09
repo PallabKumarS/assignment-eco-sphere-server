@@ -31,7 +31,7 @@ const getSinglePayment = catchAsync(async (req: Request, res: Response) => {
 
 // create payment
 const createPayment = catchAsync(async (req: Request, res: Response) => {
-  const result = await PaymentService.createPaymentIntoDB(req.body);
+  const result = await PaymentService.createPaymentIntoDB(req.ip!, req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

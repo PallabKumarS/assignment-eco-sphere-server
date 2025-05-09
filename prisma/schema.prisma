@@ -95,11 +95,11 @@ model Comment {
 }
 
 model PaidIdeaPurchase {
-  id                String   @id @default(uuid())
+  id                String    @id @default(uuid())
   userId            String
-  user              User     @relation(fields: [userId], references: [id])
+  user              User      @relation(fields: [userId], references: [id])
   ideaId            String
-  idea              Idea     @relation(fields: [ideaId], references: [id])
+  idea              Idea      @relation(fields: [ideaId], references: [id])
   paymentId         String?
   transactionStatus String?
   paymentUrl        String?
@@ -107,7 +107,11 @@ model PaidIdeaPurchase {
   spCode            String?
   spMessage         String?
   method            String?
-  createdAt         DateTime @default(now())
+  invoiceNo         String?
+  amount            Float?
+  paidAt            DateTime?
+  transactionId     String?
+  createdAt         DateTime  @default(now())
 
   @@unique([userId, ideaId])
   @@map("paid_purchases")

@@ -13,7 +13,7 @@ router.get('/:id', auth(UserRole.MEMBER), PaymentController.getSinglePayment);
 router.post('/', auth(UserRole.MEMBER), PaymentController.createPayment);
 
 router.post(
-  '/verify/:id',
+  '/:id/verify',
   auth(UserRole.MEMBER),
   PaymentController.verifyPayment,
 );
