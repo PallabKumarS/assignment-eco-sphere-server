@@ -111,7 +111,7 @@ const createPaymentIntoDB = async (
     updatedPayment = await prisma.paidIdeaPurchase.update({
       where: { id: paymentData.id },
       data: {
-        transactionStatus: payment.transactionStatus,
+        transactionStatus: 'PENDING',
         paymentId: payment.sp_order_id,
         paymentUrl: payment.checkout_url,
       },
@@ -151,6 +151,9 @@ const verifyPaymentFromDB = async (
                 ? 'CANCELLED'
                 : 'PENDING',
         paymentUrl: `${config.sp_return_url}/?order_id=${paymentId}`,
+        transactionId: payment[0].bank_trx_id,
+        method: payment[0].method,
+        paidAt: new Date(payment[0].date_time),
       },
       include: {
         idea: true,
@@ -163,7 +166,7 @@ const verifyPaymentFromDB = async (
     }
   }
 
-  return payment[0];
+  return updatedPayment;
 };
 
 //   {

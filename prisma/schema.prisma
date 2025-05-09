@@ -103,11 +103,7 @@ model PaidIdeaPurchase {
   paymentId         String?
   transactionStatus String?
   paymentUrl        String?
-  bankStatus        String?
-  spCode            String?
-  spMessage         String?
   method            String?
-  invoiceNo         String?
   amount            Float?
   paidAt            DateTime?
   transactionId     String?
