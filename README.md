@@ -177,4 +177,4 @@ POST   /api/payments/:id/verify   – Verify a payment
 
 [Backend Live Link](https://pks-eco-sphere-server.vercel.app)
 
-[GitHub Repository](https://github.com/PallabKumarS/assignment-09-eco-sphere-server)
+[GitHub Repository](https://github.com/PallabKumarS/assignment-eco-sphere-server)
